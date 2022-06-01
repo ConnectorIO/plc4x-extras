@@ -1,0 +1,62 @@
+/*
+ * Copyright (C) 2019-2021 ConnectorIO Sp. z o.o.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
+package org.connectorio.plc4x.extras.decorator;
+
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import org.apache.plc4x.java.api.messages.PlcSubscriptionRequest;
+import org.apache.plc4x.java.api.messages.PlcSubscriptionResponse;
+import org.apache.plc4x.java.api.model.PlcSubscriptionField;
+
+public class DecoratorSubscriptionRequest implements PlcSubscriptionRequest {
+
+  private final PlcSubscriptionRequest delegate;
+  private final SubscribeDecorator decorator;
+
+  public DecoratorSubscriptionRequest(PlcSubscriptionRequest delegate, SubscribeDecorator decorator) {
+    this.delegate = delegate;
+    this.decorator = decorator;
+  }
+
+  @Override
+  public CompletableFuture<? extends PlcSubscriptionResponse> execute() {
+    return decorator.decorateSubscribeResponse(this, delegate.execute());
+  }
+
+  @Override
+  public int getNumberOfFields() {
+    return delegate.getNumberOfFields();
+  }
+
+  @Override
+  public LinkedHashSet<String> getFieldNames() {
+    return delegate.getFieldNames();
+  }
+
+  @Override
+  public PlcSubscriptionField getField(String name) {
+    return delegate.getField(name);
+  }
+
+  @Override
+  public List<PlcSubscriptionField> getFields() {
+    return delegate.getFields();
+  }
+
+}

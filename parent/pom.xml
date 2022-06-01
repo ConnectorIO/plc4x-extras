@@ -1,0 +1,356 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ - Copyright (C) 2019-2021 ConnectorIO Sp. z o.o.
+ -
+ - Licensed under the Apache License, Version 2.0 (the "License");
+ - you may not use this file except in compliance with the License.
+ - You may obtain a copy of the License at
+ -
+ -     http://www.apache.org/licenses/LICENSE-2.0
+ -
+ - Unless required by applicable law or agreed to in writing, software
+ - distributed under the License is distributed on an "AS IS" BASIS,
+ - WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ - See the License for the specific language governing permissions and
+ - limitations under the License.
+ -
+ - SPDX-License-Identifier: Apache-2.0
+ -->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.connectorio.plc4x</groupId>
+    <artifactId>extras</artifactId>
+    <version>0.8.0-SNAPSHOT</version>
+    <relativePath>../pom.xml</relativePath>
+  </parent>
+
+  <groupId>org.connectorio.plc4x.extras</groupId>
+  <artifactId>parent</artifactId>
+  <packaging>pom</packaging>
+
+  <name>ConnectorIO - PLC4X - Extras - Parent</name>
+  <description>Parent for ConnectorIO supplied extensions to Apache PLC4X.</description>
+
+  <properties>
+    <plc4x.version>0.8.0</plc4x.version>
+    <karaf.version>4.2.8</karaf.version>
+
+    <guava.version>30.0-jre</guava.version>
+    <slf4j.version>1.7.21</slf4j.version>
+    <assertj.version>3.18.1</assertj.version>
+    <junit-jupiter.version>5.7.0</junit-jupiter.version>
+    <mockito.version>3.6.28</mockito.version>
+
+    <!-- various build related variables -->
+    <feature.file>${project.basedir}/target/feature/feature.xml</feature.file>
+    <osgi.version>7.0.0</osgi.version>
+    <log4j2.version>2.14.1</log4j2.version>
+  </properties>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.connectorio.plc4x.extras</groupId>
+        <artifactId>org.connectorio.plc4x.extras.decorator</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.connectorio.plc4x.extras</groupId>
+        <artifactId>org.connectorio.plc4x.extras.decorator.phase</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.connectorio.plc4x.extras</groupId>
+        <artifactId>org.connectorio.plc4x.extras.decorator.retry</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.connectorio.plc4x.extras</groupId>
+        <artifactId>org.connectorio.plc4x.extras.decorator.throttle</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.connectorio.plc4x.extras.features</groupId>
+        <artifactId>org.connectorio.plc4x.extras.feature.decorator</artifactId>
+        <version>${project.version}</version>
+        <type>xml</type>
+        <classifier>features</classifier>
+      </dependency>
+      <dependency>
+        <groupId>org.connectorio.plc4x.extras.features</groupId>
+        <artifactId>org.connectorio.plc4x.extras.feature.osgi</artifactId>
+        <version>${project.version}</version>
+        <type>xml</type>
+        <classifier>features</classifier>
+      </dependency>
+
+      <dependency>
+        <groupId>org.connectorio.plc4x.extras</groupId>
+        <artifactId>org.connectorio.plc4x.extras.osgi</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.connectorio.plc4x.extras</groupId>
+        <artifactId>org.connectorio.plc4x.extras.osgi.core</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-api</artifactId>
+        <version>${slf4j.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.google.guava</groupId>
+        <artifactId>guava</artifactId>
+        <version>${guava.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.apache.plc4x</groupId>
+        <artifactId>plc4j-api</artifactId>
+        <version>${plc4x.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.plc4x</groupId>
+        <artifactId>plc4j-spi</artifactId>
+        <version>${plc4x.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.plc4x</groupId>
+        <artifactId>plc4j-osgi</artifactId>
+        <version>${plc4x.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.plc4x</groupId>
+        <artifactId>plc4j-driver-ads</artifactId>
+        <version>${plc4x.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.plc4x</groupId>
+        <artifactId>plc4j-driver-canopen</artifactId>
+        <version>${plc4x.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.plc4x</groupId>
+        <artifactId>plc4j-driver-eip</artifactId>
+        <version>${plc4x.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.plc4x</groupId>
+        <artifactId>plc4j-driver-opcua</artifactId>
+        <version>${plc4x.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.plc4x</groupId>
+        <artifactId>plc4j-driver-s7</artifactId>
+        <version>${plc4x.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.plc4x</groupId>
+        <artifactId>plc4j-transport-socketcan</artifactId>
+        <version>${plc4x.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>org.apache.karaf.features</groupId>
+        <artifactId>framework</artifactId>
+        <version>${karaf.version}</version>
+        <type>kar</type>
+        <optional>true</optional>
+        <exclusions>
+          <exclusion>
+            <groupId>*</groupId>
+            <artifactId>*</artifactId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+
+      <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-simple</artifactId>
+        <version>${slf4j.version}</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-log4j12</artifactId>
+        <version>${slf4j.version}</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.logging.log4j</groupId>
+        <artifactId>log4j-core</artifactId>
+        <version>${log4j2.version}</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.logging.log4j</groupId>
+        <artifactId>log4j-slf4j-impl</artifactId>
+        <version>${log4j2.version}</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.junit.jupiter</groupId>
+        <artifactId>junit-jupiter-api</artifactId>
+        <version>${junit-jupiter.version}</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.junit.jupiter</groupId>
+        <artifactId>junit-jupiter-params</artifactId>
+        <version>${junit-jupiter.version}</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.assertj</groupId>
+        <artifactId>assertj-core</artifactId>
+        <version>${assertj.version}</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.mockito</groupId>
+        <artifactId>mockito-core</artifactId>
+        <version>${mockito.version}</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.mockito</groupId>
+        <artifactId>mockito-junit-jupiter</artifactId>
+        <version>${mockito.version}</version>
+        <scope>test</scope>
+      </dependency>
+
+      <dependency>
+        <groupId>org.osgi</groupId>
+        <artifactId>osgi.core</artifactId>
+        <version>${osgi.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.osgi</groupId>
+        <artifactId>osgi.cmpn</artifactId>
+        <version>${osgi.version}</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
+  <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.felix</groupId>
+          <artifactId>maven-bundle-plugin</artifactId>
+          <version>4.2.1</version>
+          <inherited>true</inherited>
+          <configuration>
+            <instructions>
+              <Build-Date>$${now;dd.MM.YYYY HH:mm}</Build-Date>
+              <_removeheaders>Require-Capability,Provide-Capability</_removeheaders>
+            </instructions>
+          </configuration>
+        </plugin>
+        <plugin>
+          <groupId>org.codehaus.mojo</groupId>
+          <artifactId>build-helper-maven-plugin</artifactId>
+          <inherited>true</inherited>
+          <executions>
+            <execution>
+              <id>attach-feature-xml</id>
+              <goals>
+                <goal>attach-artifact</goal>
+              </goals>
+              <configuration>
+                <artifacts>
+                  <artifact>
+                    <file>${feature.file}</file>
+                    <classifier>features</classifier>
+                    <type>xml</type>
+                  </artifact>
+                </artifacts>
+              </configuration>
+            </execution>
+          </executions>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.karaf.tooling</groupId>
+          <artifactId>karaf-maven-plugin</artifactId>
+          <version>${karaf.version}</version>
+          <extensions>true</extensions>
+          <inherited>true</inherited>
+          <configuration>
+            <startLevel>80</startLevel>
+            <enableGeneration>true</enableGeneration>
+            <aggregateFeatures>false</aggregateFeatures>
+            <checkDependencyChange>false</checkDependencyChange>
+            <failOnDependencyChange>false</failOnDependencyChange>
+            <logDependencyChanges>false</logDependencyChanges>
+            <overwriteChangedDependencies>false</overwriteChangedDependencies>
+          </configuration>
+          <executions>
+            <execution>
+              <id>karaf-kar</id>
+              <goals>
+                <goal>kar</goal>
+              </goals>
+              <phase>package</phase>
+            </execution>
+            <execution>
+              <id>karaf-verification</id>
+              <goals>
+                <goal>verify</goal>
+              </goals>
+              <phase>verify</phase>
+              <configuration>
+                <descriptors combine.children="append">
+                  <!-- Apache Karaf -->
+                  <descriptor>mvn:org.apache.karaf.features/framework/${karaf.version}/xml/features</descriptor>
+                  <descriptor>mvn:org.apache.karaf.features/standard/${karaf.version}/xml/features</descriptor>
+                  <!-- Current feature under verification -->
+                  <descriptor>file:${feature.file}</descriptor>
+                </descriptors>
+                <distribution>org.apache.karaf.features:framework</distribution>
+                <javase>11</javase>
+                <framework>
+                  <feature>framework</feature>
+                </framework>
+                <features combine.children="override">
+                  <feature>_none_</feature>
+                </features>
+                <verifyTransitive>false</verifyTransitive>
+                <ignoreMissingConditions>true</ignoreMissingConditions>
+                <fail>first</fail>
+              </configuration>
+            </execution>
+          </executions>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-install-plugin</artifactId>
+        <version>3.0.0-M1</version>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-deploy-plugin</artifactId>
+        <version>3.0.0-M1</version>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>3.0.0-M5</version>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.felix</groupId>
+        <artifactId>maven-bundle-plugin</artifactId>
+        <extensions>true</extensions>
+      </plugin>
+    </plugins>
+  </build>
+
+</project>

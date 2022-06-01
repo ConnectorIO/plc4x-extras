@@ -1,0 +1,6 @@
+= ConnectorIO extras for Apache PLC4X
+
+This repository provides a set of additional artifacts for https://plc4x.apache.org/[Apache PLC4X].
+
+These are currently maintained separately to drive experiments further. :)
+Currently this repository is compatible with release 0.8
