@@ -147,7 +147,27 @@
       </dependency>
       <dependency>
         <groupId>org.apache.plc4x</groupId>
+        <artifactId>plc4j-driver-modbus</artifactId>
+        <version>${plc4x.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.plc4x</groupId>
         <artifactId>plc4j-driver-s7</artifactId>
+        <version>${plc4x.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.plc4x</groupId>
+        <artifactId>plc4j-transport-tcp</artifactId>
+        <version>${plc4x.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.plc4x</groupId>
+        <artifactId>plc4j-transport-udp</artifactId>
+        <version>${plc4x.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.plc4x</groupId>
+        <artifactId>plc4j-transport-serial</artifactId>
         <version>${plc4x.version}</version>
       </dependency>
       <dependency>
