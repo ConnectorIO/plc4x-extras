@@ -18,8 +18,11 @@
 package org.connectorio.plc4x.extras.decorator;
 
 import java.time.Duration;
+import java.util.function.Consumer;
+import org.apache.plc4x.java.api.messages.PlcSubscriptionEvent;
 import org.apache.plc4x.java.api.messages.PlcSubscriptionRequest;
 import org.apache.plc4x.java.api.messages.PlcSubscriptionRequest.Builder;
+import org.apache.plc4x.java.api.model.PlcTag;
 
 public class DecoratorSubscriptionRequestBuilder implements Builder {
 
@@ -36,21 +39,46 @@ public class DecoratorSubscriptionRequestBuilder implements Builder {
     return decorator.decorateSubscribeRequest(delegate.build());
   }
 
+
   @Override
-  public Builder addCyclicField(String name, String fieldQuery, Duration pollingInterval) {
-    delegate.addCyclicField(name, fieldQuery, pollingInterval);
+  public Builder addCyclicTagAddress(String name, String tagAddress, Duration pollingInterval) {
+    delegate.addCyclicTagAddress(name, tagAddress, pollingInterval);
     return this;
   }
 
   @Override
-  public Builder addChangeOfStateField(String name, String fieldQuery) {
-    delegate.addChangeOfStateField(name, fieldQuery);
+  public Builder addCyclicTag(String name, PlcTag tag, Duration pollingInterval) {
+    delegate.addCyclicTag(name, tag, pollingInterval);
     return this;
   }
 
   @Override
-  public Builder addEventField(String name, String fieldQuery) {
-    delegate.addEventField(name, fieldQuery);
+  public Builder addChangeOfStateTagAddress(String name, String tagAddress) {
+    delegate.addChangeOfStateTagAddress(name, tagAddress);
+    return this;
+  }
+
+  @Override
+  public Builder addChangeOfStateTag(String name, PlcTag tag) {
+    delegate.addChangeOfStateTag(name, tag);
+    return this;
+  }
+
+  @Override
+  public Builder addEventTagAddress(String name, String tagAddress) {
+    delegate.addEventTagAddress(name, tagAddress);
+    return this;
+  }
+
+  @Override
+  public Builder addEventTag(String name, PlcTag tag) {
+    delegate.addEventTag(name, tag);
+    return this;
+  }
+
+  @Override
+  public Builder addPreRegisteredConsumer(String name, Consumer<PlcSubscriptionEvent> preRegisteredConsumer) {
+    delegate.addPreRegisteredConsumer(name, preRegisteredConsumer);
     return this;
   }
 }

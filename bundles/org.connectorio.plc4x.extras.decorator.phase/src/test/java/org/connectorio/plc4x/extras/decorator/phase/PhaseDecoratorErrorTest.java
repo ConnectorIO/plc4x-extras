@@ -85,11 +85,11 @@ class PhaseDecoratorErrorTest {
     connection.setProtocol(new SimulatedProtocolLogic<>(connection));
     delegate.connect();
 
-    delegate.writeRequestBuilder().addItem(TEST_FIELD_NAME, "STATE/test:INTEGER", 10).build().execute().whenComplete((r1, e1) -> {
+    delegate.writeRequestBuilder().addTagAddress(TEST_FIELD_NAME, "STATE/test:UINT", 10).build().execute().whenComplete((r1, e1) -> {
       System.out.println("Read A " + phase);
-      delegate.writeRequestBuilder().addItem(TEST_FIELD_NAME, "STATE/test:INTEGER", 20).build().execute().whenComplete((r2, e2) -> {
+      delegate.writeRequestBuilder().addTagAddress(TEST_FIELD_NAME, "STATE/test:UINT", 20).build().execute().whenComplete((r2, e2) -> {
         System.out.println("Read B " + phase);
-        delegate.writeRequestBuilder().addItem(TEST_FIELD_NAME, "STATE/test:INTEGER", 30).build().execute().whenComplete((r3, e3) -> {
+        delegate.writeRequestBuilder().addTagAddress(TEST_FIELD_NAME, "STATE/test:UINT", 30).build().execute().whenComplete((r3, e3) -> {
           System.out.println("Read C " + phase);
         });
       });

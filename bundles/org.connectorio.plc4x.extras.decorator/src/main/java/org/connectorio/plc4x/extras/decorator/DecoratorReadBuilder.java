@@ -19,7 +19,7 @@ package org.connectorio.plc4x.extras.decorator;
 
 import org.apache.plc4x.java.api.messages.PlcReadRequest;
 import org.apache.plc4x.java.api.messages.PlcReadRequest.Builder;
-import org.apache.plc4x.java.api.model.PlcField;
+import org.apache.plc4x.java.api.model.PlcTag;
 
 public class DecoratorReadBuilder implements Builder {
 
@@ -37,15 +37,16 @@ public class DecoratorReadBuilder implements Builder {
   }
 
   @Override
-  public Builder addItem(String name, String fieldQuery) {
-    delegate.addItem(name, fieldQuery);
+  public Builder addTagAddress(String name, String tagAddress) {
+    delegate.addTagAddress(name, tagAddress);
     return this;
   }
 
   @Override
-  public Builder addItem(String name, PlcField fieldQuery) {
-    delegate.addItem(name, fieldQuery);
+  public Builder addTag(String name, PlcTag tag) {
+    delegate.addTag(name, tag);
     return this;
   }
+
 
 }

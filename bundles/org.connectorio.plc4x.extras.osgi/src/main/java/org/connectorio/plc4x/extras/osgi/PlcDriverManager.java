@@ -27,11 +27,7 @@ import org.apache.plc4x.java.api.exceptions.PlcConnectionException;
  *
  * This is an interface which can be safely used for mocking and ioc scenarios.
  */
-public interface PlcDriverManager {
+public interface PlcDriverManager extends org.apache.plc4x.java.api.PlcDriverManager {
 
-  PlcConnection getConnection(String uri) throws PlcConnectionException;
 
-  PlcConnection getConnection(String url, PlcAuthentication authentication) throws PlcConnectionException;
-
-  PlcDriver getDriver(String url) throws PlcConnectionException;
 }

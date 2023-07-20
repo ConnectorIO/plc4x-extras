@@ -20,14 +20,14 @@ package org.connectorio.plc4x.extras.decorator;
 import java.util.concurrent.CompletableFuture;
 import org.apache.plc4x.java.api.PlcConnection;
 import org.apache.plc4x.java.api.exceptions.PlcConnectionException;
-import org.apache.plc4x.java.api.exceptions.PlcInvalidFieldException;
+import org.apache.plc4x.java.api.exceptions.PlcInvalidTagException;
 import org.apache.plc4x.java.api.messages.PlcBrowseRequest;
 import org.apache.plc4x.java.api.messages.PlcReadRequest.Builder;
 import org.apache.plc4x.java.api.messages.PlcSubscriptionRequest;
 import org.apache.plc4x.java.api.messages.PlcUnsubscriptionRequest;
 import org.apache.plc4x.java.api.messages.PlcWriteRequest;
 import org.apache.plc4x.java.api.metadata.PlcConnectionMetadata;
-import org.apache.plc4x.java.api.model.PlcField;
+import org.apache.plc4x.java.api.model.PlcTag;
 import org.connectorio.plc4x.DelegatingConnection;
 
 public class ConnectionWrapper implements DelegatingConnection {
@@ -54,14 +54,13 @@ public class ConnectionWrapper implements DelegatingConnection {
   }
 
   @Override
-  @Deprecated
-  public PlcField prepareField(String fieldQuery) throws PlcInvalidFieldException {
-    return connection.prepareField(fieldQuery);
+  public PlcConnectionMetadata getMetadata() {
+    return connection.getMetadata();
   }
 
   @Override
-  public PlcConnectionMetadata getMetadata() {
-    return connection.getMetadata();
+  public PlcTag parseTagAddress(String tagAddress) throws PlcInvalidTagException {
+    return connection.parseTagAddress(tagAddress);
   }
 
   @Override

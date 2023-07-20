@@ -18,26 +18,26 @@
  -->
 <features xmlns="http://karaf.apache.org/xmlns/features/v1.6.0" name="co7io-features-plc4x-extras-decorator-${project.version}">
 
-  <feature name="co7io-plc4x-decorator" description="ConnectorIO PLC4X decorator" version="${project.version}">
-    <feature>plc4x-spi</feature>
+  <feature name="co7io-plc4j-decorator" description="ConnectorIO PLC4X decorator" version="${project.version}">
+    <feature>plc4j-spi</feature>
 
     <bundle>mvn:org.connectorio.plc4x.extras/org.connectorio.plc4x.extras.decorator/${project.version}</bundle>
   </feature>
 
-  <feature name="co7io-plc4x-decorator-phase" description="ConnectorIO PLC4X phase decorator" version="${project.version}">
-    <feature>co7io-plc4x-decorator</feature>
+  <feature name="co7io-plc4j-decorator-phase" description="ConnectorIO PLC4X phase decorator" version="${project.version}">
+    <feature>co7io-plc4j-decorator</feature>
 
     <bundle>mvn:org.connectorio.plc4x.extras/org.connectorio.plc4x.extras.decorator.phase/${project.version}</bundle>
   </feature>
 
-  <feature name="co7io-plc4x-decorator-retry" description="ConnectorIO PLC4X retry decorator" version="${project.version}">
-    <feature>co7io-plc4x-decorator</feature>
+  <feature name="co7io-plc4j-decorator-retry" description="ConnectorIO PLC4X retry decorator" version="${project.version}">
+    <feature>co7io-plc4j-decorator</feature>
 
     <bundle>mvn:org.connectorio.plc4x.extras/org.connectorio.plc4x.extras.decorator.retry/${project.version}</bundle>
   </feature>
 
-  <feature name="co7io-plc4x-decorator-throttle" description="ConnectorIO PLC4X throttle decorator" version="${project.version}">
-    <feature>co7io-plc4x-decorator</feature>
+  <feature name="co7io-plc4j-decorator-throttle" description="ConnectorIO PLC4X throttle decorator" version="${project.version}">
+    <feature>co7io-plc4j-decorator</feature>
 
     <bundle dependency="true">mvn:com.google.guava/guava/${guava.version}</bundle>
     <bundle>mvn:com.google.guava/failureaccess/1.0.1</bundle>

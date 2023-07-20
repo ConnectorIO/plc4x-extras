@@ -58,27 +58,27 @@ class RetryDecoratorWriteTest {
     connection.setProtocol(new SimulatedProtocolLogic<>(connection));
     delegate.connect();
 
-    write(delegate.writeRequestBuilder().addItem(TEST_FIELD_NAME,"STATE/test:INTEGER", 10));
+    write(delegate.writeRequestBuilder().addTagAddress(TEST_FIELD_NAME,"STATE/test:UINT", 10));
     failureLimit = 2;
     PlcReadResponse response = read(createRequest(delegate));
     assertThat(response.getInteger(TEST_FIELD_NAME)).isEqualTo(10);
 
     attempts.set(0);
     failureLimit = 2;
-    write(delegate.writeRequestBuilder().addItem(TEST_FIELD_NAME,"STATE/test:INTEGER", 20));
+    write(delegate.writeRequestBuilder().addTagAddress(TEST_FIELD_NAME,"STATE/test:UINT", 20));
     response = read(createRequest(delegate));
     assertThat(response.getInteger(TEST_FIELD_NAME)).isEqualTo(20);
     assertThat(attempts.get()).isEqualTo(3);
 
     attempts.set(0);
     failureLimit = 3;
-    assertThatThrownBy(() -> write(delegate.writeRequestBuilder().addItem(TEST_FIELD_NAME,"STATE/test:INTEGER", 20)))
+    assertThatThrownBy(() -> write(delegate.writeRequestBuilder().addTagAddress(TEST_FIELD_NAME,"STATE/test:UINT", 20)))
       .isInstanceOf(ExecutionException.class);
     assertThat(attempts.get()).isEqualTo(3);
   }
 
   private Builder createRequest(DecoratorConnection delegate) {
-    return delegate.readRequestBuilder().addItem(TEST_FIELD_NAME, "STATE/test:INTEGER");
+    return delegate.readRequestBuilder().addTagAddress(TEST_FIELD_NAME, "STATE/test:UINT");
   }
 
   private PlcReadResponse read(Builder readBuilder) throws Exception {

@@ -19,10 +19,13 @@ package org.connectorio.plc4x.extras.decorator;
 
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
+import java.util.function.Consumer;
+import org.apache.plc4x.java.api.messages.PlcSubscriptionEvent;
 import org.apache.plc4x.java.api.messages.PlcSubscriptionRequest;
 import org.apache.plc4x.java.api.messages.PlcSubscriptionResponse;
-import org.apache.plc4x.java.api.model.PlcSubscriptionField;
+import org.apache.plc4x.java.api.model.PlcSubscriptionTag;
 
 public class DecoratorSubscriptionRequest implements PlcSubscriptionRequest {
 
@@ -40,23 +43,28 @@ public class DecoratorSubscriptionRequest implements PlcSubscriptionRequest {
   }
 
   @Override
-  public int getNumberOfFields() {
-    return delegate.getNumberOfFields();
+  public int getNumberOfTags() {
+    return delegate.getNumberOfTags();
   }
 
   @Override
-  public LinkedHashSet<String> getFieldNames() {
-    return delegate.getFieldNames();
+  public LinkedHashSet<String> getTagNames() {
+    return delegate.getTagNames();
   }
 
   @Override
-  public PlcSubscriptionField getField(String name) {
-    return delegate.getField(name);
+  public PlcSubscriptionTag getTag(String name) {
+    return delegate.getTag(name);
   }
 
   @Override
-  public List<PlcSubscriptionField> getFields() {
-    return delegate.getFields();
+  public List<PlcSubscriptionTag> getTags() {
+    return delegate.getTags();
+  }
+
+  @Override
+  public Map<String, List<Consumer<PlcSubscriptionEvent>>> getPreRegisteredConsumers() {
+    return delegate.getPreRegisteredConsumers();
   }
 
 }

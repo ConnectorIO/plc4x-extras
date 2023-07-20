@@ -19,6 +19,7 @@ package org.connectorio.plc4x.extras.decorator;
 
 import org.apache.plc4x.java.api.messages.PlcWriteRequest;
 import org.apache.plc4x.java.api.messages.PlcWriteRequest.Builder;
+import org.apache.plc4x.java.api.model.PlcTag;
 
 public class DecoratorWriteBuilder implements PlcWriteRequest.Builder {
 
@@ -36,8 +37,14 @@ public class DecoratorWriteBuilder implements PlcWriteRequest.Builder {
   }
 
   @Override
-  public Builder addItem(String name, String fieldQuery, Object... values) {
-    delegate.addItem(name, fieldQuery, values);
+  public Builder addTagAddress(String name, String tagAddress, Object... values) {
+    delegate.addTagAddress(name, tagAddress, values);
+    return this;
+  }
+
+  @Override
+  public Builder addTag(String name, PlcTag tag, Object... values) {
+    delegate.addTag(name, tag, values);
     return this;
   }
 
