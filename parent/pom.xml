@@ -23,7 +23,7 @@
   <parent>
     <groupId>org.connectorio.plc4x</groupId>
     <artifactId>extras</artifactId>
-    <version>0.8.2-SNAPSHOT</version>
+    <version>0.11.0-SNAPSHOT</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
 
@@ -35,8 +35,8 @@
   <description>Parent for ConnectorIO supplied extensions to Apache PLC4X.</description>
 
   <properties>
-    <plc4x.version>0.8.0</plc4x.version>
-    <karaf.version>4.2.8</karaf.version>
+    <plc4x.version>0.11.0-SNAPSHOT</plc4x.version>
+    <karaf.version>4.4.3</karaf.version>
 
     <guava.version>30.1-jre</guava.version>
     <slf4j.version>1.7.21</slf4j.version>

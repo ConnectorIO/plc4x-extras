@@ -17,10 +17,12 @@
  */
 package org.connectorio.plc4x.extras.osgi.core.internal;
 
+import java.util.Collections;
 import java.util.List;
-import org.apache.plc4x.java.api.PlcConnection;
+import java.util.Set;
+import org.apache.plc4x.java.DefaultPlcDriverManager;
+import org.apache.plc4x.java.api.PlcConnectionManager;
 import org.apache.plc4x.java.api.PlcDriver;
-import org.apache.plc4x.java.api.authentication.PlcAuthentication;
 import org.apache.plc4x.java.api.exceptions.PlcConnectionException;
 import org.connectorio.plc4x.extras.osgi.PlcDriverManager;
 
@@ -36,13 +38,26 @@ public class OsgiDriverManager implements PlcDriverManager {
   }
 
   @Override
-  public PlcConnection getConnection(String url) throws PlcConnectionException {
-    return ClassLoaderAware.call(classLoader, () -> lookupDriverManager().getConnection(url));
+  public Set<String> listDrivers() {
+    try {
+      return ClassLoaderAware.call(classLoader, () -> lookupDriverManager().listDrivers());
+    } catch (PlcConnectionException e) {
+      return Collections.emptySet();
+    }
   }
 
   @Override
-  public PlcConnection getConnection(String url, PlcAuthentication authentication) throws PlcConnectionException {
-    return ClassLoaderAware.call(classLoader, () -> lookupDriverManager().getConnection(url, authentication));
+  public PlcDriver getDriverForUrl(String url) throws PlcConnectionException {
+    return ClassLoaderAware.call(classLoader, () -> lookupDriverManager().getDriverForUrl(url));
+  }
+
+  @Override
+  public PlcConnectionManager getConnectionManager() {
+    try {
+      return ClassLoaderAware.call(classLoader, () -> lookupDriverManager().getConnectionManager());
+    } catch (PlcConnectionException e) {
+      throw new RuntimeException(e);
+    }
   }
 
   @Override
@@ -59,8 +74,8 @@ public class OsgiDriverManager implements PlcDriverManager {
    *
    * @return Driver manager
    */
-  private org.apache.plc4x.java.PlcDriverManager lookupDriverManager() {
-    return new org.apache.plc4x.java.PlcDriverManager(classLoader);
+  private org.apache.plc4x.java.api.PlcDriverManager lookupDriverManager() {
+    return new DefaultPlcDriverManager(classLoader);
   }
 
 }

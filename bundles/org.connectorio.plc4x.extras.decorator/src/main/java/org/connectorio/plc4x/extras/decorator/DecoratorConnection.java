@@ -20,14 +20,14 @@ package org.connectorio.plc4x.extras.decorator;
 import java.util.concurrent.CompletableFuture;
 import org.apache.plc4x.java.api.PlcConnection;
 import org.apache.plc4x.java.api.exceptions.PlcConnectionException;
-import org.apache.plc4x.java.api.exceptions.PlcInvalidFieldException;
+import org.apache.plc4x.java.api.exceptions.PlcInvalidTagException;
 import org.apache.plc4x.java.api.messages.PlcBrowseRequest;
 import org.apache.plc4x.java.api.messages.PlcReadRequest.Builder;
 import org.apache.plc4x.java.api.messages.PlcSubscriptionRequest;
 import org.apache.plc4x.java.api.messages.PlcUnsubscriptionRequest;
 import org.apache.plc4x.java.api.messages.PlcWriteRequest;
 import org.apache.plc4x.java.api.metadata.PlcConnectionMetadata;
-import org.apache.plc4x.java.api.model.PlcField;
+import org.apache.plc4x.java.api.model.PlcTag;
 import org.connectorio.plc4x.DelegatingConnection;
 import org.connectorio.plc4x.extras.decorator.noop.NoopReadDecorator;
 import org.connectorio.plc4x.extras.decorator.noop.NoopSubscribeDecorator;
@@ -68,9 +68,8 @@ public class DecoratorConnection implements DelegatingConnection {
   }
 
   @Override
-  @Deprecated
-  public PlcField prepareField(String fieldQuery) throws PlcInvalidFieldException {
-    return delegate.prepareField(fieldQuery);
+  public PlcTag parseTagAddress(String tagAddress) throws PlcInvalidTagException {
+    return delegate.parseTagAddress(tagAddress);
   }
 
   @Override

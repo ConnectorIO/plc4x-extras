@@ -18,40 +18,42 @@
  -->
 <features xmlns="http://karaf.apache.org/xmlns/features/v1.6.0" name="co7io-features-plc4x-extras-osgi-${project.version}">
 
-  <feature name="co7io-plc4x-osgi" description="ConnectorIO PLC4X OSGI driver manager" version="${project.version}">
-    <feature>plc4x-spi</feature>
+  <feature name="co7io-plc4j-osgi" description="ConnectorIO PLC4X OSGI driver manager" version="${project.version}">
+    <feature>plc4j-spi</feature>
 
     <bundle>mvn:org.connectorio.plc4x.extras/org.connectorio.plc4x.extras.osgi/${project.version}</bundle>
     <bundle>mvn:org.connectorio.plc4x.extras/org.connectorio.plc4x.extras.osgi.core/${project.version}</bundle>
   </feature>
 
-  <feature name="plc4x-commons-lang" version="3.11" hidden="true">
-    <bundle>mvn:org.apache.commons/commons-lang3/3.11</bundle>
+  <feature name="plc4j-commons-lang" version="3.12.0" hidden="true">
+    <bundle>mvn:org.apache.commons/commons-lang3/3.12.0</bundle>
   </feature>
 
   <!-- plc4x start -->
 
-  <feature name="plc4x-api" description="Apache PLC4X API" version="${plc4x.version}">
-    <feature>plc4x-commons-lang</feature>
+  <feature name="plc4j-api" description="Apache PLC4X API" version="${plc4x.version}">
+    <feature prerequisite="true">wrap</feature>
+    <feature>plc4j-commons-lang</feature>
 
-    <bundle>mvn:org.apache.plc4x/plc4j-api/${plc4x.version}</bundle>
+    <bundle>wrap:mvn:org.apache.plc4x/plc4j-api/${plc4x.version}$Bundle-SymbolicName=org.apache.plc4x.plc4j-api&amp;overwrite=merge&amp;Import-Package=org.slf4j;version=1.7,*</bundle>
   </feature>
 
-  <feature name="plc4x-spi" description="Apache PLC4X SPI" version="${plc4x.version}">
-    <feature>plc4x-api</feature>
-    <feature>plc4x-netty</feature>
-    <feature>plc4x-shared-deps</feature>
+  <feature name="plc4j-spi" description="Apache PLC4X SPI" version="${plc4x.version}">
+    <feature prerequisite="true">wrap</feature>
+    <feature>plc4j-api</feature>
+    <feature>plc4j-netty</feature>
+    <feature>plc4j-shared-deps</feature>
     <bundle>mvn:commons-codec/commons-codec/1.15</bundle>
 
-    <bundle>mvn:org.apache.plc4x/plc4j-spi/${plc4x.version}</bundle>
+    <bundle>wrap:mvn:org.apache.plc4x/plc4j-spi/${plc4x.version}$Bundle-SymbolicName=org.apache.plc4x.plc4j-spi&amp;overwrite=merge&amp;Import-Package=com.fasterxml.jackson.*;resolution:="optional",*</bundle>
     <bundle>mvn:org.apache.plc4x/plc4j-osgi/${plc4x.version}</bundle>
 
-    <bundle>mvn:io.vavr/vavr/0.10.3</bundle>
-    <bundle>mvn:io.vavr/vavr-match/0.10.3</bundle>
+    <bundle>mvn:io.vavr/vavr/0.10.4</bundle>
+<!--    <bundle>mvn:io.vavr/vavr-match/0.10.4</bundle>-->
   </feature>
 
-  <feature name="plc4x-shared-deps" version="${plc4x.version}" hidden="true">
-    <feature>plc4x-commons-lang</feature>
+  <feature name="plc4j-shared-deps" version="${plc4x.version}" hidden="true">
+    <feature>plc4j-commons-lang</feature>
     <bundle>mvn:com.github.jinahya/bit-io/1.4.3</bundle>
 
     <!-- lets place all of commons here ..
@@ -59,114 +61,141 @@
     -->
     <bundle dependency="true">mvn:javax.mail/mail/1.4.7</bundle>
     <bundle>mvn:commons-beanutils/commons-beanutils/1.9.4</bundle>
-    <bundle>mvn:org.apache.commons/commons-text/1.9</bundle>
-    <bundle>mvn:org.apache.commons/commons-configuration2/2.7</bundle>
+    <bundle>mvn:org.apache.commons/commons-text/1.10.0</bundle>
+    <bundle>mvn:org.apache.commons/commons-configuration2/2.9.0</bundle>
     <bundle>mvn:commons-collections/commons-collections/3.2.2</bundle>
     <bundle>mvn:commons-logging/commons-logging/1.2</bundle>
   </feature>
 
-  <feature name="plc4x-netty" version="${plc4x.version}" hidden="true">
-    <bundle>mvn:io.netty/netty-codec/4.1.54.Final</bundle>
-    <bundle>mvn:commons-codec/commons-codec/1.12</bundle>
-    <bundle>mvn:io.netty/netty-common/4.1.54.Final</bundle>
-    <bundle>mvn:io.netty/netty-transport/4.1.54.Final</bundle>
-    <bundle>mvn:io.netty/netty-resolver/4.1.54.Final</bundle>
-    <bundle>mvn:io.netty/netty-buffer/4.1.54.Final</bundle>
+  <feature name="plc4j-netty" version="${plc4x.version}" hidden="true">
+    <bundle>mvn:io.netty/netty-codec/4.1.94.Final</bundle>
+    <bundle>mvn:commons-codec/commons-codec/1.15</bundle>
+    <bundle>mvn:io.netty/netty-common/4.1.94.Final</bundle>
+    <bundle>mvn:io.netty/netty-transport/4.1.94.Final</bundle>
+    <bundle>mvn:io.netty/netty-resolver/4.1.94.Final</bundle>
+    <bundle>mvn:io.netty/netty-buffer/4.1.94.Final</bundle>
   </feature>
 
-  <feature name="netty-codec-http" version="${plc4x.version}" hidden="true">
-    <feature>plc4x-netty</feature>
-    <bundle>mvn:io.netty/netty-codec-http/4.1.54.Final</bundle>
-    <bundle>mvn:io.netty/netty-handler/4.1.54.Final</bundle>
+  <feature name="plc4j-netty-handler" version="${plc4x.version}" hidden="true">
+    <feature>plc4j-netty</feature>
+    <bundle>mvn:io.netty/netty-transport-native-unix-common/4.1.94.Final</bundle>
+    <bundle>mvn:io.netty/netty-handler/4.1.94.Final</bundle>
   </feature>
 
-  <feature name="plc4x-netty-serial" version="${plc4x.version}" hidden="true">
-    <feature>plc4x-netty</feature>
+  <!--
+  <feature name="plc4j-netty-codec-http" version="${plc4x.version}" hidden="true">
+    <feature>plc4j-netty</feature>
+    <bundle>mvn:io.netty/netty-codec-http/4.1.94.Final</bundle>
+    <bundle>mvn:io.netty/netty-handler/4.1.94.Final</bundle>
+  </feature>
+  -->
+
+  <feature name="plc4j-netty-serial" version="${plc4x.version}" hidden="true">
+    <feature>plc4j-netty</feature>
     <bundle>mvn:com.neuronrobotics/nrjavaserial/3.14.0</bundle>
-    <bundle>mvn:io.netty/netty-transport-rxtx/4.1.54.Final</bundle>
+    <bundle>mvn:io.netty/netty-transport-rxtx/4.1.94.Final</bundle>
   </feature>
 
-  <feature name="plc4x-transport-tcp">
-    <feature>plc4x-spi</feature>
-    <bundle>mvn:org.apache.plc4x/plc4j-transport-tcp/${plc4x.version}</bundle>
-  </feature>
-
-  <feature name="plc4x-transport-serial">
-    <feature>plc4x-netty-serial</feature>
-    <feature>plc4x-spi</feature>
-    <bundle>mvn:com.fazecast/jSerialComm/2.6.2</bundle>
-    <bundle>mvn:org.apache.plc4x/plc4j-transport-serial/${plc4x.version}</bundle>
-  </feature>
-
-  <feature name="plc4x-transport-socketcan">
+  <feature name="plc4j-transport-tcp">
     <feature prerequisite="true">wrap</feature>
-    <feature>plc4x-spi</feature>
-    <bundle>wrap:mvn:tel.schich/javacan/2.3.0</bundle>
-    <bundle>mvn:org.apache.plc4x/plc4j-transport-socketcan/${plc4x.version}</bundle>
+    <feature>plc4j-spi</feature>
+    <bundle>wrap:mvn:org.apache.plc4x/plc4j-transport-tcp/${plc4x.version}$Bundle-SymbolicName=org.apache.plc4x.plc4j-transport-tcp&amp;overwrite=merge&amp;Import-Package=org.slf4j;version=1.7,*</bundle>
   </feature>
 
-  <feature name="plc4x-ads-driver" description="Apache PLC4X - ADS driver" version="${plc4x.version}">
+  <feature name="plc4j-transport-serial">
+    <feature prerequisite="true">wrap</feature>
+    <feature>plc4j-netty-serial</feature>
+    <feature>plc4j-spi</feature>
+    <bundle>mvn:com.fazecast/jSerialComm/2.10.2</bundle>
+    <bundle>wrap:mvn:org.apache.plc4x/plc4j-transport-serial/${plc4x.version}$Bundle-SymbolicName=org.apache.plc4x.plc4j-transport-serial&amp;overwrite=merge&amp;Import-Package=org.slf4j;version=1.7,*</bundle>
+  </feature>
+
+  <feature name="plc4j-transport-can">
+    <feature prerequisite="true">wrap</feature>
+    <feature>plc4j-spi</feature>
+    <bundle>wrap:mvn:org.apache.plc4x/plc4j-transport-can/${plc4x.version}$Bundle-SymbolicName=org.apache.plc4x.plc4j-transport-can&amp;overwrite=merge&amp;Import-Package=org.slf4j;version=1.7,*</bundle>
+  </feature>
+
+  <feature name="plc4j-transport-socketcan">
+    <feature prerequisite="true">wrap</feature>
+    <feature>plc4j-transport-can</feature>
+    <bundle>wrap:mvn:tel.schich/javacan-core/3.2.3</bundle>
+    <bundle>wrap:mvn:org.apache.plc4x/plc4j-transport-socketcan/${plc4x.version}$Bundle-SymbolicName=org.apache.plc4x.plc4j-transport-socketcan&amp;overwrite=merge&amp;Import-Package=org.slf4j;version=1.7,*</bundle>
+  </feature>
+
+  <feature name="plc4j-ads-driver" description="Apache PLC4X - ADS driver" version="${plc4x.version}">
     <details>Implementation of protocol for AMS/ADS/TwinCAT 2.x/3.x devices.</details>
     <feature prerequisite="true">wrap</feature>
-    <feature>plc4x-api</feature>
-    <feature>plc4x-transport-tcp</feature>
-    <feature>plc4x-transport-serial</feature>
+    <feature>plc4j-api</feature>
+    <feature>plc4j-transport-tcp</feature>
+    <feature>plc4j-transport-serial</feature>
 
-    <bundle>mvn:org.apache.plc4x/plc4j-driver-ads/${plc4x.version}</bundle>
+    <bundle>wrap:mvn:org.apache.plc4x/plc4j-driver-ads/${plc4x.version}$Bundle-SymbolicName=org.apache.plc4x.plc4j-driver-ads&amp;overwrite=merge&amp;Import-Package=org.slf4j;version=1.7,*</bundle>
     <bundle>wrap:mvn:com.github.snksoft/crc/1.0.1</bundle>
   </feature>
 
-  <feature name="plc4x-canopen-driver" description="Apache PLC4X - CANopen driver" version="${plc4x.version}">
+  <feature name="plc4j-can-driver" description="Apache PLC4X - CAN driver" version="${plc4x.version}">
+    <details>Implementation of common CAN driver layer.</details>
+    <feature prerequisite="true">wrap</feature>
+    <feature>plc4j-api</feature>
+    <feature>plc4j-transport-can</feature>
+
+    <bundle>wrap:mvn:org.apache.plc4x/plc4j-driver-can/${plc4x.version}$Bundle-SymbolicName=org.apache.plc4x.plc4j-driver-can&amp;overwrite=merge&amp;Import-Package=org.slf4j;version=1.7,*</bundle>
+  </feature>
+
+  <feature name="plc4j-canopen-driver" description="Apache PLC4X - CANopen driver" version="${plc4x.version}">
     <details>Implementation of CANopen related protocols.</details>
-    <feature>plc4x-api</feature>
-    <feature>plc4x-transport-socketcan</feature>
+    <feature prerequisite="true">wrap</feature>
+    <feature>plc4j-api</feature>
+    <feature>plc4j-can-driver</feature>
 
-    <bundle>mvn:org.apache.plc4x/plc4j-driver-canopen/${plc4x.version}</bundle>
+    <bundle>wrap:mvn:org.apache.plc4x/plc4j-driver-canopen/${plc4x.version}$Bundle-SymbolicName=org.apache.plc4x.plc4j-driver-canopen&amp;overwrite=merge&amp;Import-Package=org.slf4j;version=1.7,*</bundle>
   </feature>
 
-  <feature name="plc4x-eip-driver" description="Apache PLC4X - Ethernet/IP driver" version="${plc4x.version}">
+  <feature name="plc4j-eip-driver" description="Apache PLC4X - Ethernet/IP driver" version="${plc4x.version}">
     <details>Implementation of Ethernet/IP protocol.</details>
-    <feature>plc4x-api</feature>
-    <feature>plc4x-transport-tcp</feature>
+    <feature prerequisite="true">wrap</feature>
+    <feature>plc4j-api</feature>
+    <feature>plc4j-transport-tcp</feature>
 
-    <bundle>mvn:org.apache.plc4x/plc4j-driver-eip/${plc4x.version}</bundle>
+    <bundle>wrap:mvn:org.apache.plc4x/plc4j-driver-eip/${plc4x.version}$Bundle-SymbolicName=org.apache.plc4x.plc4j-driver-eip&amp;overwrite=merge&amp;Import-Package=org.slf4j;version=1.7,*</bundle>
   </feature>
 
-  <feature name="plc4x-opcua-driver" description="Apache PLC4X - OPCUA driver" version="${plc4x.version}">
+  <feature name="plc4j-opcua-driver" description="Apache PLC4X - OPCUA driver" version="${plc4x.version}">
     <details>Implementation of OPC UA protocol.</details>
     <feature prerequisite="true">wrap</feature>
-    <feature>plc4x-api</feature>
-    <feature>plc4x-transport-tcp</feature>
-    <feature>plc4x-netty</feature>
-    <feature>netty-codec-http</feature>
-
-    <bundle>wrap:mvn:com.digitalpetri.fsm/strict-machine/0.1</bundle>
-    <bundle>wrap:mvn:com.digitalpetri.netty/netty-channel-fsm/0.3</bundle>
-    <bundle dependency="true">mvn:com.google.guava/guava/26.0-jre</bundle>
-    <bundle>mvn:org.eclipse.milo/sdk-client/0.5.4</bundle>
-    <bundle>mvn:org.eclipse.milo/sdk-core/0.5.4</bundle>
-    <bundle>mvn:org.eclipse.milo/stack-client/0.5.4</bundle>
-    <bundle>mvn:org.eclipse.milo/stack-core/0.5.4</bundle>
-    <bundle dependency="true">mvn:org.bouncycastle/bcprov-jdk15on/1.61</bundle>
-    <bundle dependency="true">mvn:org.bouncycastle/bcpkix-jdk15on/1.61</bundle>
-    <bundle>mvn:org.apache.plc4x/plc4j-driver-opcua/${plc4x.version}</bundle>
+    <feature prerequisite="true">wrap</feature>
+    <feature>plc4j-api</feature>
+    <feature>plc4j-transport-tcp</feature>
+    <feature>plc4j-netty</feature>
+<!--    <feature>netty-codec-http</feature>-->
+    <bundle dependency="true">mvn:org.bouncycastle/bcprov-jdk15on/1.70</bundle>
+    <bundle dependency="true">mvn:org.bouncycastle/bcpkix-jdk15on/1.70</bundle>
+    <bundle dependency="true">mvn:org.bouncycastle/bcutil-jdk15on/1.70</bundle>
+    <bundle>wrap:mvn:org.apache.plc4x/plc4j-driver-opcua/${plc4x.version}$Bundle-SymbolicName=org.apache.plc4x.plc4j-driver-opcua&amp;overwrite=merge&amp;Import-Package=org.slf4j;version=1.7,*</bundle>
   </feature>
 
-  <feature name="plc4x-modbus-driver" description="Apache PLC4X - Modbus driver" version="${plc4x.version}">
+  <!--
+  Disabled for now as it does require extra effort due to the way in which ARP scanning is being made.
+  <feature name="plc4j-modbus-driver" description="Apache PLC4X - Modbus driver" version="${plc4x.version}">
     <details>Implementation of Modbus protocol.</details>
-    <feature>plc4x-api</feature>
-    <feature>plc4x-transport-tcp</feature>
-    <feature>plc4x-transport-serial</feature>
+    <feature prerequisite="true">wrap</feature>
+    <feature>plc4j-api</feature>
+    <feature>plc4j-transport-tcp</feature>
+    <feature>plc4j-transport-serial</feature>
 
-    <bundle>mvn:org.apache.plc4x/plc4j-driver-modbus/${plc4x.version}</bundle>
+    <bundle>wrap:mvn:org.apache.plc4x/plc4j-driver-modbus/${plc4x.version}$Bundle-SymbolicName=org.apache.plc4x.plc4j-driver-modbus&amp;overwrite=merge&amp;Import-Package=org.slf4j;version=1.7,*</bundle>
   </feature>
+  -->
 
-  <feature name="plc4x-s7-driver" description="Apache PLC4X - S7 driver" version="${plc4x.version}">
+  <feature name="plc4j-s7-driver" description="Apache PLC4X - S7 driver" version="${plc4x.version}">
     <details>Implementation of S7/Step7 protocol.</details>
-    <feature>plc4x-api</feature>
-    <feature>plc4x-transport-tcp</feature>
-
-    <bundle>mvn:org.apache.plc4x/plc4j-driver-s7/${plc4x.version}</bundle>
+    <feature prerequisite="true">wrap</feature>
+    <feature>plc4j-netty-handler</feature>
+    <feature>plc4j-api</feature>
+    <feature>plc4j-transport-tcp</feature>
+    <bundle>mvn:org.json/json/20230618</bundle>
+    <bundle>wrap:mvn:org.apache.plc4x/plc4j-driver-s7/${plc4x.version}$Bundle-SymbolicName=org.apache.plc4x.plc4j-driver-s7&amp;overwrite=merge&amp;Import-Package=org.slf4j;version=1.7,*</bundle>
   </feature>
 
 </features>

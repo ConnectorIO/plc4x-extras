@@ -37,7 +37,7 @@ public class Activator implements BundleActivator, ServiceFactory<PlcDriverManag
 
   private final List<ClassLoader> wirings = new CopyOnWriteArrayList<>();
 
-  private ServiceRegistration<PlcDriverManager> registration;
+  private ServiceRegistration<?> registration;
   private ServiceTracker<PlcDriver, ClassLoader> drivers;
   private ServiceTracker<Transport, ClassLoader> transports;
 
@@ -48,7 +48,10 @@ public class Activator implements BundleActivator, ServiceFactory<PlcDriverManag
     drivers = new ServiceTracker<>(context, PlcDriver.class, new DriverTracker(context, wirings));
     drivers.open();
 
-    registration = context.registerService(PlcDriverManager.class, new OsgiDriverManager(wirings), new Hashtable<>());
+    registration = context.registerService(new String[] {
+      PlcDriverManager.class.getName(),
+      org.apache.plc4x.java.api.PlcDriverManager.class.getName()
+    }, new OsgiDriverManager(wirings), new Hashtable<>());
   }
 
   @Override

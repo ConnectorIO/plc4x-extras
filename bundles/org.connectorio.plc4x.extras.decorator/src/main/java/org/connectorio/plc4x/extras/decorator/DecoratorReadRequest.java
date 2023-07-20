@@ -24,7 +24,7 @@ import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import org.apache.plc4x.java.api.messages.PlcReadRequest;
 import org.apache.plc4x.java.api.messages.PlcReadResponse;
-import org.apache.plc4x.java.api.model.PlcField;
+import org.apache.plc4x.java.api.model.PlcTag;
 
 public class DecoratorReadRequest implements PlcReadRequest {
 
@@ -42,29 +42,29 @@ public class DecoratorReadRequest implements PlcReadRequest {
   }
 
   @Override
-  public int getNumberOfFields() {
-    return delegate.getNumberOfFields();
+  public int getNumberOfTags() {
+    return delegate.getNumberOfTags();
   }
 
   @Override
-  public LinkedHashSet<String> getFieldNames() {
-    return delegate.getFieldNames();
+  public LinkedHashSet<String> getTagNames() {
+    return delegate.getTagNames();
   }
 
   @Override
-  public PlcField getField(String name) {
-    return delegate.getField(name);
+  public PlcTag getTag(String name) {
+    return delegate.getTag(name);
   }
 
   @Override
-  public List<PlcField> getFields() {
-    return delegate.getFields();
+  public List<PlcTag> getTags() {
+    return delegate.getTags();
   }
 
   public String toString() {
-    Map<String, PlcField> fields = new HashMap<>();
-    for (String name : getFieldNames()) {
-      if (fields.put(name, getField(name)) != null) {
+    Map<String, PlcTag> fields = new HashMap<>();
+    for (String name : getTagNames()) {
+      if (fields.put(name, getTag(name)) != null) {
         throw new IllegalStateException("Duplicate key");
       }
     }

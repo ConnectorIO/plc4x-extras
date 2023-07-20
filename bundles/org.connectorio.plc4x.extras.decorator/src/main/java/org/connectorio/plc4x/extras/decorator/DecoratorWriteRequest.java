@@ -24,7 +24,7 @@ import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import org.apache.plc4x.java.api.messages.PlcWriteRequest;
 import org.apache.plc4x.java.api.messages.PlcWriteResponse;
-import org.apache.plc4x.java.api.model.PlcField;
+import org.apache.plc4x.java.api.model.PlcTag;
 import org.apache.plc4x.java.api.value.PlcValue;
 
 public class DecoratorWriteRequest implements PlcWriteRequest {
@@ -53,29 +53,29 @@ public class DecoratorWriteRequest implements PlcWriteRequest {
   }
 
   @Override
-  public int getNumberOfFields() {
-    return delegate.getNumberOfFields();
+  public int getNumberOfTags() {
+    return delegate.getNumberOfTags();
   }
 
   @Override
-  public LinkedHashSet<String> getFieldNames() {
-    return delegate.getFieldNames();
+  public LinkedHashSet<String> getTagNames() {
+    return delegate.getTagNames();
   }
 
   @Override
-  public PlcField getField(String name) {
-    return delegate.getField(name);
+  public PlcTag getTag(String name) {
+    return delegate.getTag(name);
   }
 
   @Override
-  public List<PlcField> getFields() {
-    return delegate.getFields();
+  public List<PlcTag> getTags() {
+    return delegate.getTags();
   }
 
   public String toString() {
     Map<String, String> fields = new HashMap<>();
-    for (String name : getFieldNames()) {
-      if (fields.put(name, getField(name) + ":" + getPlcValue(name)) != null) {
+    for (String name : getTagNames()) {
+      if (fields.put(name, getTag(name) + ":" + getPlcValue(name)) != null) {
         throw new IllegalStateException("Duplicate key");
       }
     }
