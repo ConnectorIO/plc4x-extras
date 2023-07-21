@@ -38,8 +38,8 @@
       <artifactId>org.connectorio.plc4x.extras.decorator</artifactId>
     </dependency>
     <dependency>
-      <groupId>com.google.guava</groupId>
-      <artifactId>guava</artifactId>
+      <groupId>com.bucket4j</groupId>
+      <artifactId>bucket4j-core</artifactId>
     </dependency>
     <dependency>
       <groupId>org.slf4j</groupId>
@@ -59,10 +59,8 @@
       <artifactId>mockito-junit-jupiter</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.apache.plc4x</groupId>
-      <artifactId>plc4j-driver-simulated</artifactId>
-      <version>${plc4x.version}</version>
-      <scope>test</scope>
+      <groupId>org.connectorio.plc4x.extras</groupId>
+      <artifactId>org.connectorio.plc4x.extras.test</artifactId>
     </dependency>
     <dependency>
       <groupId>org.apache.logging.log4j</groupId>

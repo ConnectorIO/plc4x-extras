@@ -22,26 +22,21 @@
 
   <parent>
     <groupId>org.connectorio.plc4x.extras</groupId>
-    <artifactId>parent</artifactId>
+    <artifactId>bundles</artifactId>
     <version>0.11.0-SNAPSHOT</version>
-    <relativePath>../parent/pom.xml</relativePath>
   </parent>
 
-  <groupId>org.connectorio.plc4x.extras</groupId>
-  <artifactId>bundles</artifactId>
-  <packaging>pom</packaging>
+  <artifactId>org.connectorio.plc4x.extras.test</artifactId>
 
-  <name>ConnectorIO - PLC4X - Extras - Bundles</name>
-  <description>ConnectorIO extensions for Apache PLC4X.</description>
+  <name>ConnectorIO - PLC4X - Extras - Test</name>
+  <description>Testing utilities.</description>
 
-  <modules>
-    <module>org.connectorio.plc4x.extras.decorator</module>
-    <module>org.connectorio.plc4x.extras.decorator.phase</module>
-    <module>org.connectorio.plc4x.extras.decorator.retry</module>
-    <module>org.connectorio.plc4x.extras.decorator.throttle</module>
-    <module>org.connectorio.plc4x.extras.osgi</module>
-    <module>org.connectorio.plc4x.extras.osgi.core</module>
-    <module>org.connectorio.plc4x.extras.test</module>
-  </modules>
+  <dependencies>
+    <dependency>
+      <groupId>org.apache.plc4x</groupId>
+      <artifactId>plc4j-driver-simulated</artifactId>
+      <version>${plc4x.version}</version>
+    </dependency>
+  </dependencies>
 
 </project>

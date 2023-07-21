@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019-2021 ConnectorIO Sp. z o.o.
+ * Copyright (C) 2023-2023 ConnectorIO Sp. z o.o.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,15 +15,14 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  */
-package org.connectorio.plc4x.extras.decorator.retry;
+package org.connectorio.plc4x.extras.decorator.throttle;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.atomic.AtomicInteger;
-import org.apache.plc4x.java.api.exceptions.PlcRuntimeException;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import org.apache.plc4x.java.api.messages.PlcReadRequest;
 import org.apache.plc4x.java.api.messages.PlcReadRequest.Builder;
 import org.apache.plc4x.java.api.messages.PlcReadResponse;
@@ -35,60 +34,70 @@ import org.connectorio.plc4x.extras.decorator.DecoratorConnection;
 import org.connectorio.plc4x.extras.test.SimulatedProtocolLogic;
 import org.junit.jupiter.api.Test;
 
-class RetryDecoratorReadTest {
+class ThrottleDecoratorTest {
 
   public static final String TEST_FIELD_NAME = "test";
-  private int failureLimit = 0;
+  private final ExecutorService executor = Executors.newFixedThreadPool(2);
+  private CountDownLatch latch = new CountDownLatch(1);
 
   @Test
   void check() throws Exception {
     SimulatedDevice device = new SimulatedDevice("fo");
-    AtomicInteger attempts = new AtomicInteger(0);
     SimulatedConnection connection = new SimulatedConnection(device) {
       @Override
       public CompletableFuture<PlcReadResponse> read(PlcReadRequest readRequest) {
-        if (attempts.getAndIncrement() < failureLimit) {
+        try {
+          latch.await();
+          return super.read(readRequest);
+        } catch (InterruptedException e) {
           CompletableFuture<PlcReadResponse> future = new CompletableFuture<>();
-          future.completeExceptionally(new PlcRuntimeException("Runtime error"));
+          future.completeExceptionally(e);
           return future;
         }
-        return super.read(readRequest);
       }
     };
 
-    DecoratorConnection delegate = new DecoratorConnection(connection, new RetryDecorator(2), null, null, null);
+    DecoratorConnection delegate = new DecoratorConnection(connection, new ThrottleDecorator(1), null, null, null);
     connection.setProtocol(new SimulatedProtocolLogic<>(connection));
     delegate.connect();
 
     write(delegate.writeRequestBuilder().addTagAddress(TEST_FIELD_NAME,"STATE/test:UINT", 10));
-    failureLimit = 2;
-    PlcReadResponse response = read(createRequest(delegate));
-    assertThat(response.getInteger(TEST_FIELD_NAME)).isEqualTo(10);
 
-    attempts.set(0);
-    failureLimit = 2;
-    write(delegate.writeRequestBuilder().addTagAddress(TEST_FIELD_NAME,"STATE/test:UINT", 20));
-    response = read(createRequest(delegate));
-    assertThat(response.getInteger(TEST_FIELD_NAME)).isEqualTo(20);
-    assertThat(attempts.get()).isEqualTo(3);
+    CompletableFuture<PlcReadResponse> r1 = bridge(createRequest(delegate).build());
+    CompletableFuture<PlcReadResponse> r2 = bridge(createRequest(delegate).build());
+    assertThat(r1.isDone()).isFalse();
+    assertThat(r2.isDone()).isFalse();
 
-    attempts.set(0);
-    failureLimit = 3;
-    assertThatThrownBy(() -> read(createRequest(delegate)))
-      .isInstanceOf(ExecutionException.class);
-    assertThat(attempts.get()).isEqualTo(3);
+    latch.countDown();
+
+    Thread.sleep(100);
+    assertThat(r1.isDone() || r2.isDone()).isTrue();
+    assertThat(!r1.isDone() || !r2.isDone()).isTrue();
   }
 
   private Builder createRequest(DecoratorConnection delegate) {
     return delegate.readRequestBuilder().addTagAddress(TEST_FIELD_NAME, "STATE/test:UINT");
   }
 
-  private PlcReadResponse read(Builder readBuilder) throws Exception {
-    return readBuilder.build().execute().get();
-  }
-
   private PlcWriteResponse write(PlcWriteRequest.Builder writeBuilder) throws Exception {
     return writeBuilder.build().execute().get();
+  }
+
+  private CompletableFuture<PlcReadResponse> bridge(PlcReadRequest source) {
+    CompletableFuture<PlcReadResponse> future = new CompletableFuture<>();
+    executor.submit(new Runnable() {
+      @Override
+      public void run() {
+        source.execute().whenComplete((result, error) -> {
+          if (error != null) {
+            future.completeExceptionally(error);
+            return;
+          }
+          future.complete(result);
+        });
+      }
+    });
+    return future;
   }
 
 }
