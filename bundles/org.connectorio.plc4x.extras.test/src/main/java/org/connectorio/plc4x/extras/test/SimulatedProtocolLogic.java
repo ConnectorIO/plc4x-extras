@@ -15,7 +15,7 @@
  *
  * SPDX-License-Identifier: Apache-2.0
  */
-package org.connectorio.plc4x.extras.decorator.phase;
+package org.connectorio.plc4x.extras.test;
 
 import java.util.concurrent.CompletableFuture;
 import org.apache.plc4x.java.api.messages.PlcReadRequest;

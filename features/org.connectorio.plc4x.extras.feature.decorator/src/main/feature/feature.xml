@@ -16,7 +16,12 @@
  -
  - SPDX-License-Identifier: Apache-2.0
  -->
-<features xmlns="http://karaf.apache.org/xmlns/features/v1.6.0" name="co7io-features-plc4x-extras-decorator-${project.version}">
+<features xmlns="http://karaf.apache.org/xmlns/features/v1.6.0" name="co7io-features-plc4x-extras-decorator-${project.version}"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="
+    http://karaf.apache.org/xmlns/features/v1.6.0
+    https://karaf.apache.org/xmlns/features/v1.6.0
+  ">
 
   <feature name="co7io-plc4j-decorator" description="ConnectorIO PLC4X decorator" version="${project.version}">
     <feature>plc4j-spi</feature>
@@ -37,10 +42,10 @@
   </feature>
 
   <feature name="co7io-plc4j-decorator-throttle" description="ConnectorIO PLC4X throttle decorator" version="${project.version}">
+    <feature prerequisite="true">wrap</feature>
     <feature>co7io-plc4j-decorator</feature>
 
-    <bundle dependency="true">mvn:com.google.guava/guava/${guava.version}</bundle>
-    <bundle>mvn:com.google.guava/failureaccess/1.0.1</bundle>
+    <bundle dependency="true">wrap:mvn:com.bucket4j/bucket4j-core/${bucket4j.version}$Bundle-SymbolicName=com.bucket4j.bucket4j-core</bundle>
     <bundle>mvn:org.connectorio.plc4x.extras/org.connectorio.plc4x.extras.decorator.throttle/${project.version}</bundle>
   </feature>
 

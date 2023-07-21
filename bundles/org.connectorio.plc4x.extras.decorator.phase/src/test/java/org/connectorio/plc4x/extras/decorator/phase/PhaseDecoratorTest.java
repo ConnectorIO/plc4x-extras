@@ -23,6 +23,7 @@ import org.apache.plc4x.java.api.exceptions.PlcConnectionException;
 import org.apache.plc4x.java.simulated.connection.SimulatedConnection;
 import org.apache.plc4x.java.simulated.connection.SimulatedDevice;
 import org.connectorio.plc4x.extras.decorator.DecoratorConnection;
+import org.connectorio.plc4x.extras.test.SimulatedProtocolLogic;
 import org.junit.jupiter.api.Test;
 
 class PhaseDecoratorTest {

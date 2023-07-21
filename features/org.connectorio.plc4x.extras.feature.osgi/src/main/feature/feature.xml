@@ -16,7 +16,13 @@
  -
  - SPDX-License-Identifier: Apache-2.0
  -->
-<features xmlns="http://karaf.apache.org/xmlns/features/v1.6.0" name="co7io-features-plc4x-extras-osgi-${project.version}">
+<features xmlns="http://karaf.apache.org/xmlns/features/v1.6.0"
+  name="co7io-features-plc4x-extras-osgi-${project.version}"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="
+    http://karaf.apache.org/xmlns/features/v1.6.0
+    https://karaf.apache.org/xmlns/features/v1.6.0
+  ">
 
   <feature name="co7io-plc4j-osgi" description="ConnectorIO PLC4X OSGI driver manager" version="${project.version}">
     <feature>plc4j-spi</feature>
@@ -49,7 +55,7 @@
     <bundle>mvn:org.apache.plc4x/plc4j-osgi/${plc4x.version}</bundle>
 
     <bundle>mvn:io.vavr/vavr/0.10.4</bundle>
-<!--    <bundle>mvn:io.vavr/vavr-match/0.10.4</bundle>-->
+    <!--    <bundle>mvn:io.vavr/vavr-match/0.10.4</bundle>-->
   </feature>
 
   <feature name="plc4j-shared-deps" version="${plc4x.version}" hidden="true">
@@ -168,7 +174,7 @@
     <feature>plc4j-api</feature>
     <feature>plc4j-transport-tcp</feature>
     <feature>plc4j-netty</feature>
-<!--    <feature>netty-codec-http</feature>-->
+    <!--    <feature>netty-codec-http</feature>-->
     <bundle dependency="true">mvn:org.bouncycastle/bcprov-jdk15on/1.70</bundle>
     <bundle dependency="true">mvn:org.bouncycastle/bcpkix-jdk15on/1.70</bundle>
     <bundle dependency="true">mvn:org.bouncycastle/bcutil-jdk15on/1.70</bundle>

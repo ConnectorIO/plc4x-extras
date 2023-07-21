@@ -17,7 +17,10 @@
  */
 package org.connectorio.plc4x.extras.decorator.throttle;
 
-import com.google.common.util.concurrent.RateLimiter;
+import io.github.bucket4j.Bandwidth;
+import io.github.bucket4j.Bucket;
+import io.github.bucket4j.local.LocalBucket;
+import java.time.Duration;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 import org.apache.plc4x.java.api.messages.PlcReadRequest;
@@ -34,17 +37,27 @@ import org.connectorio.plc4x.extras.decorator.WriteDecorator;
 
 public class ThrottleDecorator implements ReadDecorator, WriteDecorator {
 
-  private final RateLimiter readLimit;
-  private final RateLimiter writeLimit;
+  private final Bucket readLimit;
+  private final Bucket writeLimit;
 
-  public ThrottleDecorator(double rate) {
+  public ThrottleDecorator(long rate) {
     this(rate, rate);
   }
 
   @SuppressWarnings("all")
-  public ThrottleDecorator(double readRate, double writeRate) {
-    this.readLimit = RateLimiter.create(readRate, 0, TimeUnit.SECONDS);
-    this.writeLimit = RateLimiter.create(writeRate, 0, TimeUnit.SECONDS);
+  public ThrottleDecorator(long readRate, long writeRate) {
+    this(readRate, writeRate, TimeUnit.SECONDS);
+  }
+
+  public ThrottleDecorator(long readRate, long writeRate, TimeUnit timeUnit) {
+    this.readLimit = createBucket(readRate, timeUnit, "read");
+    this.writeLimit = createBucket(writeRate, timeUnit, "write");
+  }
+
+  private static LocalBucket createBucket(long readRate, TimeUnit timeUnit, String id) {
+    return Bucket.builder()
+      .addLimit(Bandwidth.simple(readRate, Duration.ofMillis(timeUnit.toMillis(1))).withId(id))
+      .build();
   }
 
   @Override
@@ -57,8 +70,14 @@ public class ThrottleDecorator implements ReadDecorator, WriteDecorator {
     return new DecoratorReadRequest(delegate, this) {
       @Override
       public CompletableFuture<? extends PlcReadResponse> execute() {
-        readLimit.acquire();
-        return delegate.execute();
+        try {
+          readLimit.asBlocking().consume(1);
+          return delegate.execute();
+        } catch (InterruptedException e) {
+          CompletableFuture<? extends PlcReadResponse> future = new CompletableFuture<>();
+          future.completeExceptionally(e);
+          return future;
+        }
       }
     };
   }
@@ -78,8 +97,14 @@ public class ThrottleDecorator implements ReadDecorator, WriteDecorator {
     return new DecoratorWriteRequest(delegate, this) {
       @Override
       public CompletableFuture<? extends PlcWriteResponse> execute() {
-        writeLimit.acquire();
-        return delegate.execute();
+        try {
+          writeLimit.asBlocking().consume(1);
+          return delegate.execute();
+        } catch (InterruptedException e) {
+          CompletableFuture<? extends PlcWriteResponse> future = new CompletableFuture<>();
+          future.completeExceptionally(e);
+          return future;
+        }
       }
     };
   }

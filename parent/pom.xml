@@ -38,7 +38,7 @@
     <plc4x.version>0.11.0-SNAPSHOT</plc4x.version>
     <karaf.version>4.4.3</karaf.version>
 
-    <guava.version>30.1-jre</guava.version>
+    <bucket4j.version>8.3.0</bucket4j.version>
     <slf4j.version>1.7.21</slf4j.version>
     <assertj.version>3.18.1</assertj.version>
     <junit-jupiter.version>5.7.0</junit-jupiter.version>
@@ -100,14 +100,21 @@
       </dependency>
 
       <dependency>
+        <groupId>org.connectorio.plc4x.extras</groupId>
+        <artifactId>org.connectorio.plc4x.extras.test</artifactId>
+        <version>${project.version}</version>
+        <scope>test</scope>
+      </dependency>
+
+      <dependency>
         <groupId>org.slf4j</groupId>
         <artifactId>slf4j-api</artifactId>
         <version>${slf4j.version}</version>
       </dependency>
       <dependency>
-        <groupId>com.google.guava</groupId>
-        <artifactId>guava</artifactId>
-        <version>${guava.version}</version>
+        <groupId>com.bucket4j</groupId>
+        <artifactId>bucket4j-core</artifactId>
+        <version>${bucket4j.version}</version>
       </dependency>
 
       <dependency>
