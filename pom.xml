@@ -33,6 +33,10 @@
 
   <name>ConnectorIO - PLC4X - Extras</name>
 
+  <properties>
+    <project.build.outputTimestamp>0</project.build.outputTimestamp>
+  </properties>
+
   <modules>
     <module>parent</module>
     <module>bundles</module>

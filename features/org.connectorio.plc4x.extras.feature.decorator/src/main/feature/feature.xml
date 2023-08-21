@@ -45,7 +45,7 @@
     <feature prerequisite="true">wrap</feature>
     <feature>co7io-plc4j-decorator</feature>
 
-    <bundle dependency="true">wrap:mvn:com.bucket4j/bucket4j-core/${bucket4j.version}$Bundle-SymbolicName=com.bucket4j.bucket4j-core</bundle>
+    <bundle>wrap:mvn:com.bucket4j/bucket4j-core/${bucket4j.version}$Bundle-SymbolicName=com.bucket4j.bucket4j-core&amp;overwrite=merge&amp;Import-Package=*&amp;-removeheaders=Require-Capability,Provide-Capability</bundle>
     <bundle>mvn:org.connectorio.plc4x.extras/org.connectorio.plc4x.extras.decorator.throttle/${project.version}</bundle>
   </feature>
 

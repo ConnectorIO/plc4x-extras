@@ -52,7 +52,7 @@
     <bundle>mvn:commons-codec/commons-codec/1.15</bundle>
 
     <bundle>wrap:mvn:org.apache.plc4x/plc4j-spi/${plc4x.version}$Bundle-SymbolicName=org.apache.plc4x.plc4j-spi&amp;overwrite=merge&amp;Import-Package=com.fasterxml.jackson.*;resolution:="optional",*</bundle>
-    <bundle>mvn:org.apache.plc4x/plc4j-osgi/${plc4x.version}</bundle>
+    <bundle>wrap:mvn:org.apache.plc4x/plc4j-osgi/${plc4x.version}$Bundle-SymbolicName=org.apache.plc4x.plc4j-osgi&amp;overwrite=merge&amp;Import-Package=!java,*</bundle>
 
     <bundle>mvn:io.vavr/vavr/0.10.4</bundle>
     <!--    <bundle>mvn:io.vavr/vavr-match/0.10.4</bundle>-->
