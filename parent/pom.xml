@@ -35,7 +35,7 @@
   <description>Parent for ConnectorIO supplied extensions to Apache PLC4X.</description>
 
   <properties>
-    <plc4x.version>0.11.0-SNAPSHOT</plc4x.version>
+    <plc4x.version>0.11.0-connectorio-1</plc4x.version>
     <karaf.version>4.3.9</karaf.version>
 
     <bucket4j.version>8.3.0</bucket4j.version>
