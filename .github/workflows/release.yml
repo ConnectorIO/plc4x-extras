@@ -57,7 +57,7 @@ jobs:
       - name: Maven Prepare Release
         run: >-
           mvn -B
-          release:prepare -DpreparationProfiles=release
+          release:prepare -DpreparationProfiles=release,connectorio
           -DreleaseVersion=${{ inputs.releaseVersion }}
           -DdevelopmentVersion=${{ inputs.developmentVersion }}
           -DdryRun=${{ inputs.dryRun }}
@@ -65,7 +65,7 @@ jobs:
         if: success()
         run: >-
           mvn -B
-          release:perform -DreleaseProfiles=release
+          release:perform -DreleaseProfiles=release,connectorio
         env:
           CI_RELEASE_USERNAME: ${{ secrets.CI_RELEASE_USERNAME }}
           CI_RELEASE_PASSWORD: ${{ secrets.CI_RELEASE_PASSWORD }}
