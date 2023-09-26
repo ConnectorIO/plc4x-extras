@@ -8,6 +8,7 @@ on:
 
 jobs:
   build:
+    if: "!contains(github.event.commits[0].message, '[maven-release-plugin] prepare release')"
     permissions:
       checks: write
       contents: read
@@ -27,6 +28,9 @@ jobs:
       with:
         java-version: ${{ matrix.java }}
         distribution: 'temurin'
+        server-id: sonatype-nexus-snapshots
+        server-username: CI_DEPLOY_USERNAME
+        server-password: CI_DEPLOY_PASSWORD
     - name: Cache local Maven repository
       uses: actions/cache@v3
       with:
@@ -42,7 +46,6 @@ jobs:
         restore-keys: ${{ runner.os }}-sonar
     - name: Build with Maven
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       run: >-
         mvn -B -fae -nsu clean verify
@@ -50,6 +53,13 @@ jobs:
         -Dsonar.projectKey=ConnectorIO_plc4x-extras
         -Dsonar.organization=connectorio
         -Dsonar.host.url=https://sonarcloud.io
+    - name: Maven Deploy
+      if: github.event_name != 'pull_request' && success()
+      run: |
+        mvn deploy
+      env:
+        CI_DEPLOY_USERNAME: ${{ secrets.CI_DEPLOY_USERNAME }}
+        CI_DEPLOY_PASSWORD: ${{ secrets.CI_DEPLOY_PASSWORD }}
     - name: Publish Test Report
       if: success() || failure()
       uses: scacap/action-surefire-report@v1
