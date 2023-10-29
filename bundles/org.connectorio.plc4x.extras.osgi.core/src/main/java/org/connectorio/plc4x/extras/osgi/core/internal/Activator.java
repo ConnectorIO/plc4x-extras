@@ -31,27 +31,23 @@ import org.osgi.framework.ServiceRegistration;
 import org.osgi.util.tracker.ServiceTracker;
 
 /**
- * Activator to start tracking plc drivers ans transports and propagate them to driver manager who can utilize them.
+ * Activator to start tracking of plc drivers and propagate them to driver manager who can utilize them.
  */
 public class Activator implements BundleActivator, ServiceFactory<PlcDriverManager> {
 
-  private final List<ClassLoader> wirings = new CopyOnWriteArrayList<>();
-
   private ServiceRegistration<?> registration;
-  private ServiceTracker<PlcDriver, ClassLoader> drivers;
-  private ServiceTracker<Transport, ClassLoader> transports;
+  private ServiceTracker<PlcDriver, PlcDriver> drivers;
+  private final List<PlcDriver> driverList = new CopyOnWriteArrayList<>();
 
   @Override
   public void start(BundleContext context) throws Exception {
-    transports = new ServiceTracker<>(context, Transport.class, new TransportTracker(context, wirings));
-    transports.open();
-    drivers = new ServiceTracker<>(context, PlcDriver.class, new DriverTracker(context, wirings));
+    drivers = new ServiceTracker<>(context, PlcDriver.class, new DriverTracker(context, driverList));
     drivers.open();
 
     registration = context.registerService(new String[] {
       PlcDriverManager.class.getName(),
       org.apache.plc4x.java.api.PlcDriverManager.class.getName()
-    }, new OsgiDriverManager(wirings), new Hashtable<>());
+    }, new OsgiDriverManager(driverList), new Hashtable<>());
   }
 
   @Override
@@ -59,15 +55,12 @@ public class Activator implements BundleActivator, ServiceFactory<PlcDriverManag
     registration.unregister();
 
     drivers.close();
-    transports.close();
-    transports.close();
-
-    wirings.clear();
+    driverList.clear();
   }
 
   @Override
   public PlcDriverManager getService(Bundle bundle, ServiceRegistration<PlcDriverManager> registration) {
-    return new OsgiDriverManager(wirings);
+    return new OsgiDriverManager(driverList);
   }
 
   @Override

@@ -17,10 +17,11 @@
  */
 package org.connectorio.plc4x.extras.osgi.core.internal;
 
-import java.util.Collections;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import org.apache.plc4x.java.DefaultPlcDriverManager;
 import org.apache.plc4x.java.api.PlcConnectionManager;
 import org.apache.plc4x.java.api.PlcDriver;
 import org.apache.plc4x.java.api.exceptions.PlcConnectionException;
@@ -31,51 +32,50 @@ import org.connectorio.plc4x.extras.osgi.PlcDriverManager;
  */
 public class OsgiDriverManager implements PlcDriverManager {
 
-  private final CompoundClassLoader classLoader;
+  private final PlcConnectionManager connectionManager;
+  private final List<PlcDriver> drivers;
 
-  public OsgiDriverManager(List<ClassLoader> wiring) {
-    classLoader = new CompoundClassLoader(wiring);
+  public OsgiDriverManager(List<PlcDriver> drivers) {
+    this.connectionManager = new OsgiConnectionManager(this);
+    this.drivers = drivers;
   }
 
   @Override
   public Set<String> listDrivers() {
-    try {
-      return ClassLoaderAware.call(classLoader, () -> lookupDriverManager().listDrivers());
-    } catch (PlcConnectionException e) {
-      return Collections.emptySet();
+    Set<String> set = new HashSet<>();
+    for (PlcDriver driver : drivers) {
+      set.add(driver.getProtocolCode());
     }
+    return set;
   }
 
   @Override
   public PlcDriver getDriverForUrl(String url) throws PlcConnectionException {
-    return ClassLoaderAware.call(classLoader, () -> lookupDriverManager().getDriverForUrl(url));
+    return getDriver(url);
   }
 
   @Override
   public PlcConnectionManager getConnectionManager() {
-    try {
-      return ClassLoaderAware.call(classLoader, () -> lookupDriverManager().getConnectionManager());
-    } catch (PlcConnectionException e) {
-      throw new RuntimeException(e);
-    }
+    return connectionManager;
   }
 
   @Override
   public PlcDriver getDriver(String url) throws PlcConnectionException {
-    return ClassLoaderAware.call(classLoader, () -> lookupDriverManager().getDriver(url));
+    try {
+      URI driverUrl = new URI(url);
+      String protocol = driverUrl.getScheme();
+      for (PlcDriver driver : drivers) {
+        if (protocol.equals(driver.getProtocolCode())) {
+          return driver;
+        }
+      }
+    } catch (URISyntaxException e) {
+      throw new PlcConnectionException("Could not determine driver", e);
+    }
+    throw new PlcConnectionException("Unsupported driver");
   }
 
   void close() {
-  }
-
-  /**
-   * Drivers are looked up at the start of PlcDriverManager so its initialization must be defered to actual
-   * connection opening when all drivers are installed, and not when manager is ready.
-   *
-   * @return Driver manager
-   */
-  private org.apache.plc4x.java.api.PlcDriverManager lookupDriverManager() {
-    return new DefaultPlcDriverManager(classLoader);
   }
 
 }

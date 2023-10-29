@@ -27,30 +27,32 @@ import org.osgi.util.tracker.ServiceTrackerCustomizer;
 /**
  * A driver tracker which registers its class loaders as source for class lookups for PlcDriverManager.
  */
-public class DriverTracker implements ServiceTrackerCustomizer<PlcDriver, ClassLoader> {
+public class DriverTracker implements ServiceTrackerCustomizer<PlcDriver, PlcDriver> {
 
   private final BundleContext context;
-  private final List<ClassLoader> wirings;
+  private final List<PlcDriver> drivers;
 
-  public DriverTracker(BundleContext context, List<ClassLoader> wirings) {
+  public DriverTracker(BundleContext context, List<PlcDriver> driverList) {
     this.context = context;
-    this.wirings = wirings;
+    this.drivers = driverList;
   }
 
   @Override
-  public ClassLoader addingService(ServiceReference<PlcDriver> reference) {
-    final ClassLoader loader = reference.getBundle().adapt(BundleWiring.class).getClassLoader();
-    wirings.add(loader);
-    return loader;
+  public PlcDriver addingService(ServiceReference<PlcDriver> reference) {
+    PlcDriver service = context.getService(reference);
+    drivers.add(service);
+    return service;
   }
 
   @Override
-  public void modifiedService(ServiceReference<PlcDriver> reference, ClassLoader service) {
+  public void modifiedService(ServiceReference<PlcDriver> reference, PlcDriver service) {
+
   }
 
   @Override
-  public void removedService(ServiceReference<PlcDriver> reference, ClassLoader service) {
+  public void removedService(ServiceReference<PlcDriver> reference, PlcDriver service) {
     context.ungetService(reference);
-    wirings.remove(service);
+    drivers.remove(service);
   }
+
 }
