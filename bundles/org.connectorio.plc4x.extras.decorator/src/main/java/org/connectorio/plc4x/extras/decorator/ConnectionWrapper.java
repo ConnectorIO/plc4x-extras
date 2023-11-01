@@ -22,6 +22,7 @@ import org.apache.plc4x.java.api.PlcConnection;
 import org.apache.plc4x.java.api.exceptions.PlcConnectionException;
 import org.apache.plc4x.java.api.exceptions.PlcInvalidTagException;
 import org.apache.plc4x.java.api.messages.PlcBrowseRequest;
+import org.apache.plc4x.java.api.messages.PlcPingResponse;
 import org.apache.plc4x.java.api.messages.PlcReadRequest.Builder;
 import org.apache.plc4x.java.api.messages.PlcSubscriptionRequest;
 import org.apache.plc4x.java.api.messages.PlcUnsubscriptionRequest;
@@ -64,7 +65,7 @@ public class ConnectionWrapper implements DelegatingConnection {
   }
 
   @Override
-  public CompletableFuture<Void> ping() {
+  public CompletableFuture<? extends PlcPingResponse> ping() {
     return connection.ping();
   }
 

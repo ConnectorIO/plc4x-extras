@@ -19,9 +19,12 @@ package org.connectorio.plc4x.extras.osgi.core.internal;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
+import org.apache.plc4x.java.DefaultPlcDriverManager;
 import org.apache.plc4x.java.api.PlcConnectionManager;
 import org.apache.plc4x.java.api.PlcDriver;
 import org.apache.plc4x.java.api.exceptions.PlcConnectionException;
@@ -34,6 +37,10 @@ public class OsgiDriverManager implements PlcDriverManager {
 
   private final PlcConnectionManager connectionManager;
   private final List<PlcDriver> drivers;
+
+  public OsgiDriverManager() {
+    this(lookup());
+  }
 
   public OsgiDriverManager(List<PlcDriver> drivers) {
     this.connectionManager = new OsgiConnectionManager(this);
@@ -76,6 +83,19 @@ public class OsgiDriverManager implements PlcDriverManager {
   }
 
   void close() {
+  }
+
+  private static List<PlcDriver> lookup() {
+    DefaultPlcDriverManager driverManager = new DefaultPlcDriverManager();
+    List<PlcDriver> drivers = new ArrayList<>();
+    for (String driver : driverManager.listDrivers()) {
+      try {
+        drivers.add(driverManager.getDriver(driver));
+      } catch (PlcConnectionException e) {
+        throw new RuntimeException(e);
+      }
+    }
+    return drivers;
   }
 
 }

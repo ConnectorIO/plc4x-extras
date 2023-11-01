@@ -35,7 +35,7 @@
   <description>Parent for ConnectorIO supplied extensions to Apache PLC4X.</description>
 
   <properties>
-    <plc4x.version>0.11.0-connectorio-1</plc4x.version>
+    <plc4x.version>0.11.0-connectorio-2</plc4x.version>
     <karaf.version>4.3.9</karaf.version>
 
     <bucket4j.version>8.3.0</bucket4j.version>
@@ -135,6 +135,11 @@
       <dependency>
         <groupId>org.apache.plc4x</groupId>
         <artifactId>plc4j-driver-ads</artifactId>
+        <version>${plc4x.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.plc4x</groupId>
+        <artifactId>plc4j-driver-can</artifactId>
         <version>${plc4x.version}</version>
       </dependency>
       <dependency>
