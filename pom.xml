@@ -28,13 +28,13 @@
 
   <groupId>org.connectorio.plc4x</groupId>
   <artifactId>extras</artifactId>
-  <version>extras-0.11.0-connectorio-3</version>
+  <version>0.11.1-connectorio-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <name>ConnectorIO - PLC4X - Extras</name>
 
   <properties>
-    <project.build.outputTimestamp>1698880152</project.build.outputTimestamp>
+    <project.build.outputTimestamp>1698880192</project.build.outputTimestamp>
   </properties>
 
   <modules>
@@ -47,7 +47,7 @@
     <connection>scm:git:https://github.com/ConnectorIO/plc4x-extras.git</connection>
     <developerConnection>scm:git:git@github.com:ConnectorIO/plc4x-extras.git</developerConnection>
     <url>https://github.com/ConnectorIO/plc4x-extras</url>
-    <tag>extras-extras-0.11.0-connectorio-3</tag>
+    <tag>HEAD</tag>
   </scm>
 
   <build>
