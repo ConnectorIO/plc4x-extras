@@ -281,7 +281,6 @@
           <configuration>
             <instructions>
               <Git-SCM-SHA>$${githead}</Git-SCM-SHA>
-              <Bundle-Version>${project.version}.$${substring;$${githead};0;8}</Bundle-Version>
               <_removeheaders>Include-Resource,Private-Package,Require-Capability,Provide-Capability,Bnd-LastModified</_removeheaders>
             </instructions>
           </configuration>
