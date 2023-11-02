@@ -23,7 +23,7 @@
   <parent>
     <groupId>org.connectorio.plc4x.extras</groupId>
     <artifactId>parent</artifactId>
-    <version>0.11.1-connectorio-SNAPSHOT</version>
+    <version>0.11.1-connectorio-1</version>
     <relativePath>../parent/pom.xml</relativePath>
   </parent>
 
