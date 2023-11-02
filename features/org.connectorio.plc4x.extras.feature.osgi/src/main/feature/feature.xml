@@ -74,7 +74,7 @@
 
   <feature name="plc4j-netty" version="${plc4x.version}" hidden="true">
     <bundle>mvn:io.netty/netty-codec/4.1.94.Final</bundle>
-    <bundle>mvn:commons-codec/commons-codec/1.15</bundle>
+    <bundle>mvn:commons-codec/commons-codec/1.16.0</bundle>
     <bundle>mvn:io.netty/netty-common/4.1.94.Final</bundle>
     <bundle>mvn:io.netty/netty-transport/4.1.94.Final</bundle>
     <bundle>mvn:io.netty/netty-resolver/4.1.94.Final</bundle>
