@@ -48,7 +48,7 @@ public class OsgiDriverManager implements PlcDriverManager {
   }
 
   @Override
-  public Set<String> listDrivers() {
+  public Set<String> getProtocolCodes() {
     Set<String> set = new HashSet<>();
     for (PlcDriver driver : drivers) {
       set.add(driver.getProtocolCode());
@@ -88,7 +88,7 @@ public class OsgiDriverManager implements PlcDriverManager {
   private static List<PlcDriver> lookup() {
     DefaultPlcDriverManager driverManager = new DefaultPlcDriverManager();
     List<PlcDriver> drivers = new ArrayList<>();
-    for (String driver : driverManager.listDrivers()) {
+    for (String driver : driverManager.getProtocolCodes()) {
       try {
         drivers.add(driverManager.getDriver(driver));
       } catch (PlcConnectionException e) {

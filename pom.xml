@@ -28,13 +28,13 @@
 
   <groupId>org.connectorio.plc4x</groupId>
   <artifactId>extras</artifactId>
-  <version>0.11.1-connectorio-SNAPSHOT</version>
+  <version>0.12.0-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <name>ConnectorIO - PLC4X - Extras</name>
 
   <properties>
-    <project.build.outputTimestamp>1698936200</project.build.outputTimestamp>
+    <project.build.outputTimestamp>1709636346</project.build.outputTimestamp>
   </properties>
 
   <modules>
