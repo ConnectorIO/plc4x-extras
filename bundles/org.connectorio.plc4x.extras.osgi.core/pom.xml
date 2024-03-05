@@ -23,7 +23,7 @@
   <parent>
     <groupId>org.connectorio.plc4x.extras</groupId>
     <artifactId>bundles</artifactId>
-    <version>0.12.0</version>
+    <version>0.12.0-SNAPSHOT</version>
   </parent>
 
   <artifactId>org.connectorio.plc4x.extras.osgi.core</artifactId>
