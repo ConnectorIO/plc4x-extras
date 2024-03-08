@@ -23,7 +23,7 @@
   <parent>
     <groupId>org.connectorio.plc4x.extras</groupId>
     <artifactId>bundles</artifactId>
-    <version>0.12.1-SNAPSHOT</version>
+    <version>0.13.0-SNAPSHOT</version>
   </parent>
 
   <artifactId>org.connectorio.plc4x.extras.test</artifactId>
