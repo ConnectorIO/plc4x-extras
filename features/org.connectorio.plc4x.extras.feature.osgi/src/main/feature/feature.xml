@@ -101,31 +101,68 @@
     <bundle>mvn:io.netty/netty-transport-rxtx/4.1.94.Final</bundle>
   </feature>
 
-  <feature name="plc4j-transport-tcp">
+  <feature name="plc4j-transport-tcp" version="${plc4x.version}">
     <feature prerequisite="true">wrap</feature>
     <feature>plc4j-spi</feature>
-    <bundle>wrap:mvn:org.apache.plc4x/plc4j-transport-tcp/${plc4x.version}$Bundle-SymbolicName=org.apache.plc4x.plc4j-transport-tcp&amp;overwrite=merge&amp;Import-Package=!java,org.slf4j;version=1.7,*</bundle>
+    <bundle>wrap:mvn:org.apache.plc4x/plc4j-transport-tcp/${plc4x.version}$Bundle-SymbolicName=org.apache.plc4x.plc4j-transport-tcp&amp;SPI-Provider=*&amp;overwrite=merge&amp;Import-Package=!java,org.slf4j;version=1.7,*</bundle>
   </feature>
 
-  <feature name="plc4j-transport-serial">
+  <feature name="plc4j-transport-serial" version="${plc4x.version}">
     <feature prerequisite="true">wrap</feature>
     <feature>plc4j-netty-serial</feature>
     <feature>plc4j-spi</feature>
     <bundle>mvn:com.fazecast/jSerialComm/2.10.2</bundle>
-    <bundle>wrap:mvn:org.apache.plc4x/plc4j-transport-serial/${plc4x.version}$Bundle-SymbolicName=org.apache.plc4x.plc4j-transport-serial&amp;overwrite=merge&amp;Import-Package=!java,org.slf4j;version=1.7,*</bundle>
+    <bundle>wrap:mvn:org.apache.plc4x/plc4j-transport-serial/${plc4x.version}$Bundle-SymbolicName=org.apache.plc4x.plc4j-transport-serial&amp;SPI-Provider=*&amp;overwrite=merge&amp;Import-Package=!java,org.slf4j;version=1.7,*</bundle>
   </feature>
 
-  <feature name="plc4j-transport-can">
+  <feature name="plc4j-transport-can" version="${plc4x.version}">
     <feature prerequisite="true">wrap</feature>
     <feature>plc4j-spi</feature>
-    <bundle>wrap:mvn:org.apache.plc4x/plc4j-transport-can/${plc4x.version}$Bundle-SymbolicName=org.apache.plc4x.plc4j-transport-can&amp;overwrite=merge&amp;Import-Package=!java,org.slf4j;version=1.7,*</bundle>
+    <bundle>wrap:mvn:org.apache.plc4x/plc4j-transport-can/${plc4x.version}$Bundle-SymbolicName=org.apache.plc4x.plc4j-transport-can&amp;SPI-Provider=*&amp;overwrite=merge&amp;Import-Package=!java,org.slf4j;version=1.7,*</bundle>
   </feature>
 
-  <feature name="plc4j-transport-socketcan">
+  <feature name="javacan" version="${javacan.version}">
     <feature prerequisite="true">wrap</feature>
+    <bundle>wrap:mvn:tel.schich/javacan-core/${javacan.version}$Bundle-SymbolicName=tel.schich.javacan-core</bundle>
+  </feature>
+
+  <feature name="plc4j-javacan" version="${javacan.version}">
+    <feature>javacan</feature>
+    <conditional>
+      <condition>req:osgi.native;filter:="(&amp;(osgi.native.osname=Linux)(osgi.native.processor=x86_32))"</condition>
+      <bundle>wrap:mvn:tel.schich/javacan-core/${javacan.version}/jar/x86_32$Bundle-SymbolicName=tel.schich.javacan-core-x86_32&amp;Fragment-Host=tel.schich.javacan-core</bundle>
+    </conditional>
+    <conditional>
+      <condition>req:osgi.native;filter:="(&amp;(osgi.native.osname=Linux)(osgi.native.processor=x86_64))"</condition>
+      <bundle>wrap:mvn:tel.schich/javacan-core/${javacan.version}/jar/x86_64$Bundle-SymbolicName=tel.schich.javacan-core-x86_64&amp;Fragment-Host=tel.schich.javacan-core</bundle>
+    </conditional>
+    <conditional>
+      <condition>req:osgi.native;filter:="(&amp;(osgi.native.osname=Linux)(osgi.native.processor=armv6))"</condition>
+      <bundle>wrap:mvn:tel.schich/javacan-core/${javacan.version}/jar/armv6$Bundle-SymbolicName=tel.schich.javacan-core-armv6&amp;Fragment-Host=tel.schich.javacan-core</bundle>
+    </conditional>
+    <conditional>
+      <condition>req:osgi.native;filter:="(&amp;(osgi.native.osname=Linux)(osgi.native.processor=armv7))"</condition>
+      <bundle>wrap:mvn:tel.schich/javacan-core/${javacan.version}/jar/armv7$Bundle-SymbolicName=tel.schich.javacan-core-armv7&amp;Fragment-Host=tel.schich.javacan-core</bundle>
+    </conditional>
+    <conditional>
+      <condition>req:osgi.native;filter:="(&amp;(osgi.native.osname=Linux)(|(osgi.native.processor=AArch64)(osgi.native.processor=armv8)))"</condition>
+      <bundle>wrap:mvn:tel.schich/javacan-core/${javacan.version}/jar/aarch64$Bundle-SymbolicName=tel.schich.javacan-core-aarch64&amp;Fragment-Host=tel.schich.javacan-core</bundle>
+    </conditional>
+    <conditional>
+      <condition>req:osgi.native;filter:="(&amp;(osgi.native.osname=Linux)(osgi.native.processor=riscv32))"</condition>
+      <bundle>wrap:mvn:tel.schich/javacan-core/${javacan.version}/jar/riscv32$Bundle-SymbolicName=tel.schich.javacan-core-riscv32&amp;Fragment-Host=tel.schich.javacan-core</bundle>
+    </conditional>
+    <conditional>
+      <condition>req:osgi.native;filter:="(&amp;(osgi.native.osname=Linux)(osgi.native.processor=riscv64))"</condition>
+      <bundle>wrap:mvn:tel.schich/javacan-core/${javacan.version}/jar/riscv64$Bundle-SymbolicName=tel.schich.javacan-core-riscv64&amp;Fragment-Host=tel.schich.javacan-core</bundle>
+    </conditional>
+  </feature>
+
+  <feature name="plc4j-transport-socketcan" version="${plc4x.version}">
+    <feature prerequisite="true">wrap</feature>
+    <feature>plc4j-javacan</feature>
     <feature>plc4j-transport-can</feature>
-    <bundle>wrap:mvn:tel.schich/javacan-core/3.2.3</bundle>
-    <bundle>wrap:mvn:org.apache.plc4x/plc4j-transport-socketcan/${plc4x.version}$Bundle-SymbolicName=org.apache.plc4x.plc4j-transport-socketcan&amp;overwrite=merge&amp;Import-Package=!java,org.slf4j;version=1.7,*</bundle>
+    <bundle>wrap:mvn:org.apache.plc4x/plc4j-transport-socketcan/${plc4x.version}$Bundle-SymbolicName=org.apache.plc4x.plc4j-transport-socketcan&amp;SPI-Provider=*&amp;overwrite=merge&amp;Import-Package=!java,org.slf4j;version=1.7,*</bundle>
   </feature>
 
   <feature name="plc4j-ads-driver" description="Apache PLC4X - ADS driver" version="${plc4x.version}">
@@ -135,7 +172,7 @@
     <feature>plc4j-transport-tcp</feature>
     <feature>plc4j-transport-serial</feature>
 
-    <bundle>wrap:mvn:org.apache.plc4x/plc4j-driver-ads/${plc4x.version}$Bundle-SymbolicName=org.apache.plc4x.plc4j-driver-ads&amp;overwrite=merge&amp;Import-Package=!java,org.slf4j;version=1.7,*</bundle>
+    <bundle>wrap:mvn:org.apache.plc4x/plc4j-driver-ads/${plc4x.version}$Bundle-SymbolicName=org.apache.plc4x.plc4j-driver-ads&amp;SPI-Provider=*&amp;SPI-Consumer=*&amp;overwrite=merge&amp;Import-Package=!java,org.slf4j;version=1.7,*</bundle>
     <bundle>wrap:mvn:com.github.snksoft/crc/1.0.1</bundle>
   </feature>
 
@@ -145,7 +182,12 @@
     <feature>plc4j-api</feature>
     <feature>plc4j-transport-can</feature>
 
-    <bundle>wrap:mvn:org.apache.plc4x/plc4j-driver-can/${plc4x.version}$Bundle-SymbolicName=org.apache.plc4x.plc4j-driver-can&amp;overwrite=merge&amp;Import-Package=!java,org.slf4j;version=1.7,*</bundle>
+    <conditional>
+      <condition>req:os.name=Linux</condition>
+      <feature>plc4j-transport-socketcan</feature>
+    </conditional>
+
+    <bundle>wrap:mvn:org.apache.plc4x/plc4j-driver-can/${plc4x.version}$Bundle-SymbolicName=org.apache.plc4x.plc4j-driver-can&amp;SPI-Provider=*&amp;SPI-Consumer=*&amp;overwrite=merge&amp;Import-Package=!java,org.slf4j;version=1.7,*</bundle>
   </feature>
 
   <feature name="plc4j-canopen-driver" description="Apache PLC4X - CANopen driver" version="${plc4x.version}">
@@ -154,7 +196,7 @@
     <feature>plc4j-api</feature>
     <feature>plc4j-can-driver</feature>
 
-    <bundle>wrap:mvn:org.apache.plc4x/plc4j-driver-canopen/${plc4x.version}$Bundle-SymbolicName=org.apache.plc4x.plc4j-driver-canopen&amp;overwrite=merge&amp;Import-Package=!java,org.slf4j;version=1.7,*</bundle>
+    <bundle>wrap:mvn:org.apache.plc4x/plc4j-driver-canopen/${plc4x.version}$Bundle-SymbolicName=org.apache.plc4x.plc4j-driver-canopen&amp;SPI-Provider=*&amp;SPI-Consumer=*&amp;overwrite=merge&amp;Import-Package=!java,org.slf4j;version=1.7,*</bundle>
   </feature>
 
   <feature name="plc4j-eip-driver" description="Apache PLC4X - Ethernet/IP driver" version="${plc4x.version}">
@@ -163,7 +205,7 @@
     <feature>plc4j-api</feature>
     <feature>plc4j-transport-tcp</feature>
 
-    <bundle>wrap:mvn:org.apache.plc4x/plc4j-driver-eip/${plc4x.version}$Bundle-SymbolicName=org.apache.plc4x.plc4j-driver-eip&amp;overwrite=merge&amp;Import-Package=!java,org.slf4j;version=1.7,*</bundle>
+    <bundle>wrap:mvn:org.apache.plc4x/plc4j-driver-eip/${plc4x.version}$Bundle-SymbolicName=org.apache.plc4x.plc4j-driver-eip&amp;SPI-Provider=*&amp;SPI-Consumer=*&amp;overwrite=merge&amp;Import-Package=!java,org.slf4j;version=1.7,*</bundle>
   </feature>
 
   <feature name="plc4j-opcua-driver" description="Apache PLC4X - OPCUA driver" version="${plc4x.version}">
@@ -177,7 +219,7 @@
     <bundle dependency="true">mvn:org.bouncycastle/bcprov-jdk15on/1.70</bundle>
     <bundle dependency="true">mvn:org.bouncycastle/bcpkix-jdk15on/1.70</bundle>
     <bundle dependency="true">mvn:org.bouncycastle/bcutil-jdk15on/1.70</bundle>
-    <bundle>wrap:mvn:org.apache.plc4x/plc4j-driver-opcua/${plc4x.version}$Bundle-SymbolicName=org.apache.plc4x.plc4j-driver-opcua&amp;overwrite=merge&amp;Import-Package=!java,org.slf4j;version=1.7,*</bundle>
+    <bundle>wrap:mvn:org.apache.plc4x/plc4j-driver-opcua/${plc4x.version}$Bundle-SymbolicName=org.apache.plc4x.plc4j-driver-opcua&amp;SPI-Provider=*&amp;SPI-Consumer=*&amp;overwrite=merge&amp;Import-Package=!java,org.slf4j;version=1.7,*</bundle>
   </feature>
 
   <!--
@@ -200,7 +242,7 @@
     <feature>plc4j-api</feature>
     <feature>plc4j-transport-tcp</feature>
     <bundle>mvn:org.json/json/20230618</bundle>
-    <bundle>wrap:mvn:org.apache.plc4x/plc4j-driver-s7/${plc4x.version}$Bundle-SymbolicName=org.apache.plc4x.plc4j-driver-s7&amp;overwrite=merge&amp;Import-Package=!java,org.slf4j;version=1.7,*</bundle>
+    <bundle>wrap:mvn:org.apache.plc4x/plc4j-driver-s7/${plc4x.version}$Bundle-SymbolicName=org.apache.plc4x.plc4j-driver-s7&amp;SPI-Provider=*&amp;SPI-Consumer=*&amp;overwrite=merge&amp;Import-Package=!java,org.slf4j;version=1.7,*</bundle>
   </feature>
 
 </features>
