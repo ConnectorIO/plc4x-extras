@@ -15,7 +15,7 @@ jobs:
       CI_DEPLOY_PASSWORD: ${{ secrets.CI_DEPLOY_PASSWORD }}
     with:
       openhab: false
-      server_id: sonatype-nexus-snapshots
+      server_id: central-snapshots
       additional_profiles: apache,connectorio
       deploy: true
       skip_test_publish: true

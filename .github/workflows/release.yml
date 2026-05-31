@@ -31,7 +31,7 @@ jobs:
       CI_RELEASE_PASSWORD: ${{ secrets.CI_RELEASE_PASSWORD }}
     with:
       openhab: false
-      server_id: 'sonatype-nexus-staging'
+      server_id: central
       additional_profiles: apache,connectorio
       release_version: ${{ inputs.release_version }}
       development_version: ${{ inputs.development_version }}
